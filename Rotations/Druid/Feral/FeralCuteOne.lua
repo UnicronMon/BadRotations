@@ -1,5 +1,5 @@
 -------------------------------------------------------
--- Author = CuteOne
+-- Author = CuteOne and UnicronMon
 -- Patch = 10.1.7
 --    Patch should be the latest patch you've updated the rotation for (i.e., 9.2.5)
 -- Coverage = 100%
@@ -900,6 +900,7 @@ local getMarkUnit = function(option)
     return "player"
 end
 
+
 --------------------
 --- Action Lists ---
 --------------------
@@ -1214,12 +1215,6 @@ actionList.def = function()
             return true
         end
     end
---[[     if talent.primalWrath and cast.able.primalWrath() and #var.enemies.yards8 >= 2 and var.comboPoints > 4 and ui.useAOE(8 + var.astralInfluence, 2) then
-        if cast.primalWrath() then
-            ui.debug("Cast Primal Wrath [def] 14")
-            return true
-        end
-    end ]]
 
     -- 15 ferocious_bite,target_if=max:target.time_to_die,if=buff.apex_predators_craving.up&(spell_targets.swipe_cat=1|!talent.primal_wrath.enabled|!buff.sabertooth.up)&!(variable.need_bt&active_bt_triggers=2)
     if cast.able.ferociousBite() and var.range.dyn5 and buff.apexPredatorsCraving.exists() and ((#var.enemies.yards8 == 1 or not talent.primalWrath or not buff.sabertooth.exists()) and not (bt.need and bt.triggers == 2)) then
@@ -1229,6 +1224,12 @@ actionList.def = function()
         end
     end
 
+    --[[ if talent.primalWrath and cast.able.primalWrath() and #var.enemies.yards8 >= 2 and var.comboPoints > 4 and ui.useAOE(8 + var.astralInfluence, 2) then
+        if cast.primalWrath() then
+            ui.debug("Cast Primal Wrath [def] 14")
+            return true
+        end
+    end ]]
     -- 16 call_action_list,name=berserk,if=buff.bs_inc.up
     if var.bsIncUp then
         --ui.debug("Calling Action List [berserk] from [def] - 16")
@@ -1259,131 +1260,6 @@ actionList.def = function()
     return false
     -- 22 regrowth,if=energy<25&buff.predatory_swiftness.up&!buff.clearcasting.up&variable.regrowth
 end
-
-actionList.default = {
-    function()
-        if actionList.interrupts() then return true end
-    end,
-
-    -- 1 prowl,if=(buff.bs_inc.down|!in_combat)&!buff.prowl.up","Executed every time the actor is available.
-    function()
-        if not unit.inCombat() and shouldStealth() and var.ui.prowlMode then
-            if cast.prowl() then
-                ui.debug("Casting Prowl [def] - 1")
-                return true
-            end
-            if cast.incarnProwl() then
-                ui.debug("Casting Incarn Prowl [def] - 1")
-                return true
-            end
-        end
-    end,
-
-    -- 2 cat_form,if=!buff.cat_form.up
-    function()
-        if cast.able.catForm("player") and not buff.catForm.exists() then
-            if cast.catForm("player") then
-                ui.debug("Casting Cat Form [def] - 2")
-                return true
-            end
-        end
-    end,
-    -- 3 invoke_external_buff,name=power_infusion
-    -- 4 call_action_list,name=variables
-    -- 5 tigers_fury,target_if=min:target.time_to_die,if=talent.convoke_the_spirits.enabled|!talent.convoke_the_spirits.enabled&(!buff.tigers_fury.up|energy.deficit>65)|(target.time_to_die<15&talent.predator.enabled)
-    function()
-        if cast.able.tigersFury() and (not buff.tigersFury.exists() or var.energyDeficit > 65) then
-            if cast.tigersFury("player") then
-                ui.debug("Casting Tiger's Fury [def] - 5")
-                return true
-            end
-        end
-    end,
-    -- 6 rake,target_if=persistent_multiplier>dot.rake.pmultiplier,if=buff.prowl.up|buff.shadowmeld.up
-    function()
-        if cast.able.rake() and isStealthed() and var.range.dyn5 then
-            for i = 1, #var.enemies.yards5f do
-                local thisUnit = var.enemies.yards5f[i]
-                if (debuff.rake.calc(thisUnit) >= debuff.rake.applied(thisUnit)) then
-                    if cast.rake(thisUnit) then
-                        ui.debug("Casting Rake [def] - 6")
-                        return true
-                    end
-                end
-            end
-        end
-    end,
-    -- 7 auto_attack,if=!buff.prowl.up&!buff.shadowmeld.up
-    -- 8 natures_vigil,if=spell_targets.swipe_cat>0
-    -- 9 renewal,if=variable.regrowth
-    -- 10 adaptive_swarm,target=self,if=talent.unbridled_swarm&spell_targets.swipe_cat<=1&dot.adaptive_swarm_heal.stack<4&dot.adaptive_swarm_heal.remains>4
-    -- 11 adaptive_swarm,target_if=((!dot.adaptive_swarm_damage.ticking|dot.adaptive_swarm_damage.remains<2)&(dot.adaptive_swarm_damage.stack<3)&!action.adaptive_swarm_damage.in_flight&!action.adaptive_swarm.in_flight)&target.time_to_die>5,if=!(variable.need_bt&active_bt_triggers=2)&(!talent.unbridled_swarm.enabled|spell_targets.swipe_cat=1)
-    -- 12 adaptive_swarm,target_if=max:((1+dot.adaptive_swarm_damage.stack)*dot.adaptive_swarm_damage.stack<3*time_to_die),if=dot.adaptive_swarm_damage.stack<3&talent.unbridled_swarm.enabled&spell_targets.swipe_cat>1&!(variable.need_bt&active_bt_triggers=2)
-    -- 13 call_action_list,name=cooldown
-    function() if actionList.cooldown() then return true end end,
-    -- 14 feral_frenzy,target_if=max:target.time_to_die,if=((talent.dire_fixation.enabled&debuff.dire_fixation.up)|!talent.dire_fixation.enabled|spell_targets.swipe_cat>1)&(combo_points<2|combo_points<3&buff.bs_inc.up|time<10)
-    function()
-        if cast.able.feralFrenzy("target") and var.range.dyn5 and ((talent.direFixation and debuff.direFixation.exists()) or not talent.direFixation or #var.enemies.yards8 > 1) and (var.comboPoints < 2 or (var.comboPoints < 3 and var.bsIncUp)) then
-            if cast.feralFrenzy("target") then
-                ui.debug("Casting Feral Frenzy [def] - 14")
-                return true
-            end
-        end
-        if talent.primalWrath and cast.able.primalWrath() and #var.enemies.yards8 >= 2 and var.comboPoints > 4 and ui.useAOE(8 + var.astralInfluence, 2) then
-            if cast.primalWrath() then
-                ui.debug("Cast Primal Wrath [def] 14")
-                return true
-            end
-        end
-    end,
-
-    -- 15 ferocious_bite,target_if=max:target.time_to_die,if=buff.apex_predators_craving.up&(spell_targets.swipe_cat=1|!talent.primal_wrath.enabled|!buff.sabertooth.up)&!(variable.need_bt&active_bt_triggers=2)
-    function()
-        if cast.able.ferociousBite() and var.range.dyn5 and buff.apexPredatorsCraving.exists() and ((#var.enemies.yards8 == 1 or not talent.primalWrath or not buff.sabertooth.exists()) and not (bt.need and bt.triggers == 2)) then
-            if cast.ferociousBite() then
-                ui.debug("Casting Ferocious Bite [def] - 15")
-                return true
-            end
-        end
-    end,
-
-    -- 16 call_action_list,name=berserk,if=buff.bs_inc.up
-    function()
-        if var.bsIncUp then
-            --ui.debug("Calling Action List [berserk] from [def] - 16")
-            if actionList.berserk() then return true end
-        end
-    end,
-    -- 17 wait,sec=combo_points=5,if=combo_points=4&buff.predator_revealed.react&energy.deficit>40&spell_targets.swipe_cat=1
-    -- 18 call_action_list,name=finisher,if=combo_points>=4&!(combo_points=4&buff.bloodtalons.stack<=1&active_bt_triggers=2&spell_targets.swipe_cat=1)
-    function()
-        if var.comboPoints >= 4 and not (var.comboPoints == 4 and bt.stacks <= 1 and bt.triggers == 2 and #var.enemies.yards8 == 1) then
-            --ui.debug("Calling Action List [finisher] from [def] - 18")
-            if actionList.finisher() then return true end
-        end
-    end,
-    -- 19 call_action_list,name=bloodtalons,if=variable.need_bt&!buff.bs_inc.up&combo_points<5
-    function()
-        if bt.need and not var.bsIncUp and var.comboPoints < 5 then
-            --ui.debug("Calling Action List [bloodtalons] from [def] - 19")
-            if actionList.bloodtalons() then return true end
-        end
-    end,
-    -- 20 call_action_list,name=aoe_builder,if=spell_targets.swipe_cat>1&talent.primal_wrath.enabled
-    function()
-        if #var.enemies.yards8 > 1 and talent.primalWrath then
-            --ui.debug("Calling Action List [aoe_builder] from [def] - 20")
-            if actionList.aoe_builder() then return true end
-        end
-    end,
-    -- 21 call_action_list,name=builder,if=!buff.bs_inc.up&combo_points<5
-    function()
-        if not var.bsIncUp and var.comboPoints < 5 then
-            --ui.debug("Calling Action List [builder] from [def] - 21")
-            if actionList.builder() then return true end
-        end
-    end,
-}
 
 actionList.aoe_builder = function()
     -- 1 brutal_slash,target_if=min:target.time_to_die,if=cooldown.brutal_slash.full_recharge_time<4|target.time_to_die<5
@@ -1862,12 +1738,24 @@ end
 
 actionList.finisher = function()
     -- 1 primal_wrath,if=((dot.primal_wrath.refreshable&!talent.circle_of_life_and_death.enabled)|dot.primal_wrath.remains<6|(talent.tear_open_wounds.enabled|(spell_targets.swipe_cat>4&!talent.rampant_ferocity.enabled)))&spell_targets.primal_wrath>1&talent.primal_wrath.enabled
+    if cast.able.primalWrath("player","aoe", 1, 8 + var.astralInfluence) and var.range.dyn8AOE and #var.enemies.yards8 > 1 then
+        if cast.primalWrath("player","aoe", 1, 8 + var.astralInfluence) then ui.debug("Casting Primal Wrath - AoE [finisher]") return true end
+    end
+    -- primal_wrath,target_if=refreshable,if=spell_targets.primal_wrath>1
+    for i = 1, #var.enemies.yards8 do
+        local thisUnit = var.enemies.yards8[i]
+        if cast.able.primalWrath(thisUnit) and debuff.rip.refresh(thisUnit) and (#var.enemies.yards8 > 1) then
+            if cast.primalWrath("player","aoe", 1, 8 + var.astralInfluence) then ui.debug("Casting Primal Wrath - Refresh [finisher]") return true end
+        end
+    end
+--[[
     if talent.primalWrath and cast.able.primalWrath() and #var.enemies.yards8 >= 2 and ui.useAOE(8 + var.astralInfluence, 2) then
         if cast.primalWrath() then
             ui.debug("Casting Primal Wrath [finisher] - 1");
             return true
         end
     end
+    ]]
     -- 2 rip,target_if=refreshable&(!talent.primal_wrath.enabled|spell_targets.swipe_cat=1)
     if cast.able.rip() and debuff.rip.refresh() and (not talent.primalWrath or #var.enemies.yards8 == 1) then
         if cast.rip() then
