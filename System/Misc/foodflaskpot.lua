@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 local agilityPotion = br.player.potion.wod.agilityBasic
 local intellectPotion = br.player.potion.wod.intellectBasic
 local strengthPotion = br.player.potion.wod.strengthBasic

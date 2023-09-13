@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- This creates the normal BadRotations Configuration Window
 br.ui.window.config = {}
 function br.ui:createConfigWindow()

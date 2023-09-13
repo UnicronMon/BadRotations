@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Chat Overlay: Originally written by Sheuron.
 local function onUpdate(self)
 	if self.time < br._G.GetTime() - 2.0 then

@@ -1,5 +1,8 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
+---@class BR.API.Runeforge
 br.api.runeforge = function(runeforge,k,v)
     runeforge[k].equiped = false
 

@@ -1,4 +1,7 @@
-local _, br = ...
+
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 ----------------------
 --- ABOUT THIS API ---
@@ -7,6 +10,7 @@ if br.api == nil then br.api = {} end
 -- These calls help in retrieving information about unit based checks.
 -- unit is the table located at br.player.unit, call this in profile to use.
 
+---@class BR.API.Unit
 br.api.unit = function(self)
     -- Local reference to unit
     local unit = self.unit
@@ -14,31 +18,43 @@ br.api.unit = function(self)
     ----------------
     --- Unit API ---
     ----------------
+
     -- Aberration
+    ---@param thisUnit? UnitId
+    ---@return boolean
     unit.aberration = function(thisUnit)
         local isAberration = br["isAberration"]
         if thisUnit == nil then thisUnit = "target" end
         return isAberration(thisUnit)
     end
+
     -- Beast
+    ---@param thisUnit? UnitId
+    ---@return boolean
     unit.beast = function(thisUnit)
         local isBeast = br["isBeast"]
         if thisUnit == nil then thisUnit = "target" end
         return isBeast(thisUnit)
     end
     -- Can Attack
+    ---@param thisUnit? UnitId
+    ---@return boolean
     unit.canAttack = function(thisUnit,playerUnit)
         local UnitCanAttack = br._G["UnitCanAttack"]
         if playerUnit == nil then playerUnit = "player" end
         return UnitCanAttack(thisUnit,playerUnit)
     end
     -- Cancelform
+    ---@return boolean
     unit.cancelForm = function()
         local RunMacroText = br._G.RunMacroText
         local CancelShapeshiftForm = br._G["CancelShapeshiftForm"]
         return CancelShapeshiftForm() or RunMacroText("/CancelForm")
     end
     -- Casting / Channelling
+    ---@param thisUnit? UnitId
+    ---@param spellID spellId
+    ---@return boolean
     unit.casting = function(thisUnit, spellID)
         if thisUnit == nil then thisUnit = "player" end
         local spellCasting = br._G.UnitCastingInfo(thisUnit)
@@ -51,14 +67,17 @@ br.api.unit = function(self)
     end
 
     -- Combat Time
+    ---@return number
     unit.combatTime = function()
         return br.getCombatTime()
     end
+    ---@return number
     unit.ooCombatTime = function()
         local getOoCTime = br["getOoCTime()"]
         return getOoCTime()
     end
     -- Charmed
+    ---@return boolean
     unit.charmed = function(thisUnit)
         local UnitIsCharmed = br._G["UnitIsCharmed"]
         return UnitIsCharmed(thisUnit)
@@ -68,108 +87,149 @@ br.api.unit = function(self)
         return br._G.ClearTarget()
     end
     -- Dead
+    ---@param thisUnit UnitId
+    ---@return boolean
     unit.deadOrGhost = function(thisUnit)
         local UnitIsDeadOrGhost = br._G["UnitIsDeadOrGhost"]
         return UnitIsDeadOrGhost(thisUnit)
     end
     -- Demon
+    ---@param thisUnit? UnitId
+    ---@return boolean
     unit.demon = function(thisUnit)
         local isDemon = br["isDemon"]
         if thisUnit == nil then thisUnit = "target" end
         return isDemon(thisUnit)
     end
     -- Distance
+    ---@param thisUnit UnitId
+    ---@param otherUnit UnitId
+    ---@return boolean
     unit.distance = function(thisUnit,otherUnit)
         return br.getDistance(thisUnit,otherUnit)
     end
     -- Dual Wielding
+    ---@return boolean
     unit.dualWielding = function()
         local IsDualWielding = br._G["IsDualWielding"]
         return IsDualWielding()
     end
     -- Enemy
+    ---@param thisUnit UnitId
+    ---@param playerUnit? UnitId
+    ---@return boolean
     unit.enemy = function(thisUnit,playerUnit)
         local UnitIsEnemy = br._G["UnitIsEnemy"]
         if playerUnit == nil then playerUnit = "player" end
         return UnitIsEnemy(thisUnit,playerUnit)
     end
     -- Exists
+    ---@param thisUnit UnitId
+    ---@return boolean
     unit.exists = function(thisUnit)
         local UnitExists = br["GetUnitExists"]
         return UnitExists(thisUnit)
     end
     -- Facing
+    ---@param thisUnit UnitId
+    ---@param otherUnit? UnitId
+    ---@param degrees number
+    ---@return boolean
     unit.facing = function(thisUnit,otherUnit,degrees)
         if otherUnit == nil then otherUnit = thisUnit; thisUnit = "player" end
         return br.getFacing(thisUnit,otherUnit,degrees)
     end
     -- Falling
+    ---@return boolean
     unit.falling = function()
         local IsFalling = br._G["IsFalling"]
         return IsFalling()
     end
     -- Fall Time
+    ---@return number
     unit.fallTime = function()
         local getFallTime = br["getFallTime"]
         return getFallTime()
     end
     -- Flying
+    ---@return boolean
     unit.flying = function()
         local IsFlying = br._G["IsFlying"]
         return IsFlying()
     end
     -- Forms
+    ---@return number
     unit.form = function()
         local GetShapeshiftForm = br._G["GetShapeshiftForm"]
         return GetShapeshiftForm()
     end
+    ---@return number
     unit.formCount = function()
         local GetNumShapeshiftForms = br._G["GetNumShapeshiftForms"]
         return GetNumShapeshiftForms()
     end
     -- Friend
+    ---@param thisUnit UnitId
+    ---@param playerUnit? UnitId
+    ---@return boolean
     unit.friend = function(thisUnit,playerUnit)
         local UnitIsFriend = br["GetUnitIsFriend"]
         if playerUnit == nil then playerUnit = "player" end
         return UnitIsFriend(thisUnit,playerUnit)
     end
     -- Global Cooldown (option: Max Global Cooldown)
+    ---@param max number
+    ---@return number
     unit.gcd = function(max)
         return br.getGlobalCD(max)
     end
     -- GUID
+    ---@param thisUnit UnitId
+    ---@return string
     unit.guid = function(thisUnit)
         local UnitGUID = br._G["UnitGUID"]
         return UnitGUID(thisUnit)
     end
     -- Health
+    ---@param thisUnit UnitId
+    ---@return number
     unit.health = function(thisUnit)
         if thisUnit == nil then thisUnit = "player" end
         return br._G.UnitHealth(thisUnit)
     end
     -- Health Max
+    ---@param thisUnit UnitId
+    ---@return number
     unit.healthMax = function(thisUnit)
         local UnitHealthMax = br._G["UnitHealthMax"]
         if thisUnit == nil then thisUnit = "player" end
         return UnitHealthMax(thisUnit)
     end
     -- Health Percent
+    ---@param thisUnit UnitId
+    ---@return number
     unit.hp = function(thisUnit)
         local getHP = br["getHP"]
         if thisUnit == nil then thisUnit = "player" end
         return br.round2(getHP(thisUnit),2)
     end
     -- Humanoid
+    ---@param thisUnit UnitId
+    ---@return boolean
     unit.humanoid = function(thisUnit)
         local isHumanoid = br["isHumanoid"]
         if thisUnit == nil then thisUnit = "target" end
         return isHumanoid(thisUnit)
     end
     -- ID
+    ---@param thisUnit UnitId
+    ---@return UnitId
     unit.id = function(thisUnit)
         return br.GetObjectID(thisUnit)
     end
     --  In Combat
+    ---@param thisUnit UnitId
+    ---@return boolean
     unit.inCombat = function(thisUnit)
         local UnitAffectingCombat = br._G["UnitAffectingCombat"]
         local GetNumGroupMembers = br._G["GetNumGroupMembers"]
@@ -179,6 +239,8 @@ br.api.unit = function(self)
             or (GetNumGroupMembers()>1 and (UnitAffectingCombat(thisUnit) or UnitAffectingCombat("target")))
     end
     -- Instance Type (IE: "party" / "raid")
+    ---@param thisInstance string
+    ---@return "party" | "raid"
     unit.instance = function(thisInstance)
         local select = _G["select"]
         local IsInInstance = br._G["IsInInstance"]
@@ -186,6 +248,9 @@ br.api.unit = function(self)
         return thisInstance == nil and instanceType or instanceType == thisInstance
     end
     -- Interruptable
+    ---@param thisUnit UnitId
+    ---@param castPercent number
+    ---@return boolean
     unit.interruptable = function(thisUnit,castPercent)
         if thisUnit == nil then thisUnit = "target" end
         if castPercent == nil then castPercent = 0 end

@@ -1,6 +1,8 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
 local DiesalTools = _G.LibStub("DiesalTools-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.ui:createText(parent, text, isCheckbox)
     if isCheckbox == nil then
         isCheckbox = false

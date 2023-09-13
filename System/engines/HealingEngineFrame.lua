@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.pulseNovaDebug()
 	-- if br.getOptionCheck("Healing Debug") ~= true then
 	-- 	-- if healingDebug--[[Started]] and br._G["healingDebugFrame"]:IsShown() == true then

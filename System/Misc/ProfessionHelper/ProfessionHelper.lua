@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.ProfessionHelper()
 	if br.isChecked("Profession Helper") then
 		if not br.isInCombat("player") and not (br._G.IsMounted() or br._G.IsFlying()) then

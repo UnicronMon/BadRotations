@@ -1,6 +1,8 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
 local DiesalTools = _G.LibStub("DiesalTools-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.ui:createDropdown(parent, text, itemlist, default, tooltip, tooltipDrop, hideCheckbox)
     -------------------------------
     ----Need to calculate Y Pos----

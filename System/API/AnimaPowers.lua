@@ -3,7 +3,9 @@
 -- Anima functions are stored in br.player.anima and can be utilized by `local anima = br.player.anima` in your profile.
 -- `spell` in the function represent the name in the animas list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
 -- @module br.player.anima
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
 local MAW_BUFF_MAX_DISPLAY = 44;
@@ -30,6 +32,7 @@ local function getAnimaInfo(animaID)
     return mawBuff
 end
 
+---@class BR.API.Animas
 br.api.animas = function(anima,v)
     --- Check if a specific anima power exists.
     -- @function anima.spell.exists

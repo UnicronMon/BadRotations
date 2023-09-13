@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.ui:createToggle(table,name,col,row)
 	if type(name) ~= "string" then
 		br._G.print("Invaild type "..type(name).." detected for table "..name..".  Please let devs know!")

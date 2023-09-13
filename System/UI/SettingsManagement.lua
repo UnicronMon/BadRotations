@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 
 local sep = IsMacClient() and "/" or "\\"
 

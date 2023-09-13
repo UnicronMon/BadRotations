@@ -1,5 +1,7 @@
 
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.lists == nil then
     br.lists = {}
 end

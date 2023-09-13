@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 local runeTable = {}
 function br.getChi(Unit)
 	return br._G.UnitPower(Unit, 12)

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 -- power is the table located at br.player.power
 -- v is the powerID passed from the builder which cycles all the collected power from the power list
@@ -23,6 +25,7 @@ if br.api == nil then br.api = {} end
     -- fury
     -- pain
     -- essence
+---@class BR.API.Power
 br.api.power = function(power,v)
     local isDKRunes = select(2,br._G.UnitClass("player")) == "DEATHKNIGHT" and v == 5
     local isDestruction = br._G.GetSpecializationInfo(br._G.GetSpecialization()) == 267 and v == 7

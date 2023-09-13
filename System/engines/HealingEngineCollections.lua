@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.novaEngineTables = { }
 -- This is for the Dispel Check, all Debuffs we want dispelled go here
 -- valid arguments: stacks = num range = num

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- getLatency()
 function br.getLatency()
 	-- local lag = ((select(3,GetNetStats()) + select(4,GetNetStats())) / 1000)
@@ -962,15 +964,11 @@ function br.addonDebug(msg, system)
 	if msg == nil then
 		return
 	end
-	if br.isChecked("Addon Debug Messages") then
-		if system == true and (br.getValue("Addon Debug Messages") == 1 or br.getValue("Addon Debug Messages") == 3) then
-			if br.timer:useTimer("System Delay", 0.1) then
-				print(br.classColor .. "[BadRotations] System Debug: |cffFFFFFF" .. tostring(msg))
-			end
-		elseif system ~= true and (br.getValue("Addon Debug Messages") == 2 or br.getValue("Addon Debug Messages") == 3) then
-			if br.timer:useTimer("Profile Delay", 0.1) then
-				print(br.classColor .. "[BadRotations] Profile Debug: |cffFFFFFF" .. tostring(msg))
-			end
+	local messageFrom = system and "System" or "Profile"
+	local messageToPrint = string.format(br.classColor .. "[BR] %s Debug: %s |r", messageFrom, WrapTextInColorCode(tostring(msg), "ffFFFFFF"))
+	if br.isChecked("Addon Debug Messages") and (br.getValue("Addon Debug Messages") > 0) then
+		if br.timer:useTimer(messageFrom .. " Delay", 0.1) then
+			print(messageToPrint)
 		end
 	end
 end

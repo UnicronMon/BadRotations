@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.lastCastTable = {}
 br.lastCastTable.tracker = {}
 br.lastCastTable.castTime = {}

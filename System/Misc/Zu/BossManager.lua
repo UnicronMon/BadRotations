@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.bossHelper()
     local function clickHelper(ID)
         for _,v in pairs(br.player.enemies.get(40,nil,true)) do

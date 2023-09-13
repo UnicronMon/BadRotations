@@ -3,9 +3,13 @@
 -- CD functions are stored in br.player.cd and can be utilized by `local cd = br.player.cd` in your profile.
 -- `spell` in the function represent the name in the actions list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
 -- @module br.player.cd
-local _, br = ...
+
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
+---@class BR.API.CD
 br.api.cd = function(self,spell,id)
     if self.cd == nil then self.cd = {} end
     if self.cd[spell] == nil then self.cd[spell] = {} end

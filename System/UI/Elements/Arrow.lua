@@ -1,5 +1,7 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Right Arrow
 function br.ui:createRightArrow(window)
     local rArr = DiesalGUI:Create("Button")

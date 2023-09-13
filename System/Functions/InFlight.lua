@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.InFlight = {}
 local InFlight = br.InFlight
 InFlight.Tracker = {}

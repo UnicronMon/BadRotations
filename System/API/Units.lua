@@ -1,5 +1,8 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
+---@class BR.API.Units
 br.api.units = function(self)
     local units = self.units
     -- Gets a unit within a specified range in front or around the player. 

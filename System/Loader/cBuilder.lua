@@ -1,4 +1,7 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
+---@class br.loader
 br.loader = {}
 local sep = IsMacClient() and "/" or "\\"
 local class = select(2,br._G.UnitClass('player'))

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.rangeOrMelee = {
 	[250] = "melee",
 	[251] = "melee",

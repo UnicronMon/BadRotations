@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.ui.window.profile = {}
 function br.ui:createProfileWindow(spec)
     if spec == "Initial" then

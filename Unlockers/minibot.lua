@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 local b = br._G
 local unlock = br.unlock
 -- Minibot

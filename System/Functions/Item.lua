@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- item charges
 function br.itemCharges(itemID)
 	local charges = br._G.GetItemCount(itemID, false, true)
@@ -126,8 +128,8 @@ end
 function br.getHealthPot()
 	local locale = br._G.GetLocale()
 	if locale ~= "enUS" and locale ~= "enGB" then
-		if br.hasItem(171267) then
-			return 171267
+		if br.hasItem(191380) then
+			return 191380
 		end
 	end
 	local potion = br.player.potion

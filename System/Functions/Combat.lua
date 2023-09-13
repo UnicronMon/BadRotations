@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.canAoE(unit, distance)
 	local notValid = false
 	if unit == nil then

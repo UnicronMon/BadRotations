@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- if shouldStopCasting(12345) then
 function br.shouldStopCasting(Spell)
 	-- if we are on a boss fight

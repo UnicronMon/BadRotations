@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.lists == nil then br.lists = {} end
 function br.getHeirloomNeck()
     local necks = {
@@ -50,6 +52,7 @@ br.lists.items = {
     battleScarredAugmentRune        = 160053, -- BfA augment rune item
     defiledAugmentRune              = 140587,
     lightforgedAugmentRune          = 153023, -- 7.3 augment rune item
+    draconicAugmentRune             = 201325, -- DF Augment Rune
     -- Flasks
     flaskOfTenThousandScars         = 127850,
     flaskOfTheCountlessArmies       = 127849,
@@ -181,6 +184,10 @@ br.lists.items = {
     potionOfSpectralAgility         = 171270,
     shadowCoreOil                   = 171285,
     spectralFlaskOfPower            = 171276,
+    elementalPotionOfUltimatePowerR3       = 191383,
+    potionOfShockingDisclosureR3 = 191401,
+    refreshingHealingPotionR3 = 191380,
+    phialOfElementalChaosR3 = 191359,
     -- Music of Bastion
     ascendedFlute                   = 180064,
     benevolentGong                  = 179977,

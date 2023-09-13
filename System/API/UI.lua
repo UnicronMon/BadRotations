@@ -1,14 +1,23 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
+---@class BR.API.UI
 br.api.ui = function(self)
+    ---@class BR.API.UI
     local ui = self.ui
     if ui ~= nil and ui.mode == nil then ui.mode = {} end
+    ---@param thisOption string
+    ---@return boolean
     ui.alwaysCdNever = function(thisOption)
         -- Option Dropdown Requires
         -- {"|cff008000Always", "|cff0000ffCD", "|cffff0000Never"}
         thisOption = ui.value(thisOption)
         return thisOption == 1 or (thisOption == 2 and ui.useCDs())
     end
+    ---@param thisOption string
+    ---@param minUnits? number
+    ---@param enemyCount? number
     ui.alwaysCdAoENever = function(thisOption, minUnits, enemyCount)
         -- Option Dropdown Requires
         -- {"Always", "|cff008000AOE", "|cffffff00AOE/CD", "|cff0000ffCD", "|cffff0000Never"}
@@ -21,27 +30,34 @@ br.api.ui = function(self)
             or (thisOption == 4 and ui.useCDs())
     end
     if ui.chatOverlay == nil then
+        ---@param text string
         ui.chatOverlay = function(text)
             return br.ChatOverlay(text)
         end
     end
     if ui.checked == nil then
+        ---@param thisOption string
+        ---@return boolean
         ui.checked = function(thisOption)
             if thisOption == nil then return false end
             return br.isChecked(thisOption)
         end
     end
     if ui.debug == nil then
+        ---@param text string
         ui.debug = function(text)
             return br.addonDebug(text)
         end
     end
     if ui.fullBags == nil then
+        ---@return boolean
         ui.fullBags = function()
             return br.lootManager:emptySlots() == 0
         end
     end
     if ui.isMouseDown == nil then
+        ---@param mouseButton? "LeftButton" | "RightButton" | "MiddleButton" | "Button4" | "Button5"
+        ---@return boolean
         ui.isMouseDown = function(mouseButton)
             local mouseDown = br._G.IsMouseButtonDown
             if mouseButton == nil then
@@ -52,6 +68,8 @@ br.api.ui = function(self)
         end
     end
     if ui.pause == nil then
+        ---@param ignoreChannel? boolean
+        ---@return boolean
         ui.pause = function(ignoreChannel)
             --local pause = br._G["pause"]
             if ignoreChannel == nil then ignoreChannel = false end
@@ -59,6 +77,7 @@ br.api.ui = function(self)
         end
     end
     if ui.print == nil then
+        ---@param msg string
         ui.print = function(msg)
             return br._G.print(msg)
         end
@@ -75,22 +94,30 @@ br.api.ui = function(self)
         end
     end
     if ui.timer == nil then
+        ---@param timerName string
+        ---@param interval number
         ui.timer = function(timerName, interval)
             return br.timer:useTimer(timerName, interval)
         end
     end
     if ui.toggle == nil then
+        ---@param thisToggle string
         ui.toggle = function(thisToggle)
             return not br._G.GetCurrentKeyBoardFocus() and br.SpecificToggle(thisToggle) or false
         end
     end
     if ui.value == nil then
+        ---@param thisOption string
+        ---@return any
         ui.value = function(thisOption)
             if thisOption == nil then return 0 end
             return br.getOptionValue(thisOption)
         end
     end
     if ui.useAOE == nil then
+        ---@param range? number
+        ---@param minCount? number
+        ---@param useTarget? UnitId
         ui.useAOE = function(range,minCount,useTarget)
             if range == nil then range = 8 end
             if minCount == nil then minCount = 3 end
@@ -117,6 +144,9 @@ br.api.ui = function(self)
         end
     end
     if ui.useST == nil then
+        ---@param range? number
+        ---@param minCount? number
+        ---@param useTarget? UnitId
         ui.useST = function(range,minCount,useTarget)
             if range == nil then range = 8 end
             if minCount == nil then minCount = 3 end
@@ -125,6 +155,7 @@ br.api.ui = function(self)
         end
     end
     if ui.print == nil then
+        ---@param text string
         ui.print = function(text)
             local Print = br._G["Print"]
             return Print(text)

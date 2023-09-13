@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.TTDRefresh(hpLimit)
 	if not br.enemyTable then
 		br.enemyTable = {

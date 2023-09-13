@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 local LibDraw = br._G.LibStub("LibDraw-BR")
 br.enemy	= {}
 br.lootable = {}

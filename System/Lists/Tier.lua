@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.lists == nil then
 	br.lists = {}
 end
@@ -640,6 +642,15 @@ br.lists.tier = {
 			200428, -- shoulder
 			200425, -- hands
 			200427, -- legs
+		}
+	},
+	["T30"] = {
+		["DRUID"] = {
+			202515, -- head
+			202518, -- chest
+			202513, -- shoulder
+			202516, -- hands
+			202514, -- legs
 		}
 	}
 }

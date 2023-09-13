@@ -1,6 +1,9 @@
 
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
+---@class BR.API.Module
 br.api.module = function(self)
     -- Local reference to actionList
     local buff              = self.buff
@@ -55,12 +58,12 @@ br.api.module = function(self)
             -- Healthstone / Potion
             br.ui:createSpinner(section, "Healthstone/Potion", 60, 0, 100, 5, "|cffFFFFFFHealth Percent to Cast At")
             -- Heirloom Neck
-            br.ui:createSpinner(section, "Heirloom Neck", 80, 0, 100, 5, "|cffFFFFFFHealth Percent to Cast At")
+            --br.ui:createSpinner(section, "Heirloom Neck", 80, 0, 100, 5, "|cffFFFFFFHealth Percent to Cast At")
             -- Music of Bastion
-            br.ui:createCheckbox(section, "Music of Bastion","|cffFFFFFFCheck to use.")
+            --br.ui:createCheckbox(section, "Music of Bastion","|cffFFFFFFCheck to use.")
             -- Phial of Serenity
-            br.ui:createSpinner(section, "Phial of Serenity", 30, 0, 80, 5, "|cffFFFFFFHealth Percent to Cast At")
-            br.ui:createCheckbox(section, "Auto Summon Steward")
+            --br.ui:createSpinner(section, "Phial of Serenity", 30, 0, 80, 5, "|cffFFFFFFHealth Percent to Cast At")
+            --br.ui:createCheckbox(section, "Auto Summon Steward")
         end
 
         -- Abilities - Call, module.BasicHealing(), in your rotation to use these

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br:AcceptQueues()
 	if br.getOptionCheck("Accept Queues") then
 		-- Accept Queues
@@ -32,6 +34,10 @@ local types = {
 	talent = "TalentID:",
 	achievement = "AchievementID:"
 }
+---@param tooltip GameTooltip
+---@param id number
+---@param type string
+---@param noEmptyLine? boolean
 local function addLine(tooltip, id, type, noEmptyLine)
 	local found = false
 	-- Check if we already added to this tooltip. Happens on the talent frame
@@ -54,7 +60,9 @@ local function addLine(tooltip, id, type, noEmptyLine)
 		tooltip:Show()
 	end
 end
+
 -- All types, primarily for linked tooltips
+---@param link string
 local function onSetHyperlink(self, link)
 	local type, id = string.match(link, "^(%a+):(%d+)")
 	if not type or not id then
@@ -253,6 +261,9 @@ if not LibStub or LibStub.minor < LIBSTUB_MINOR then
 	setmetatable(LibStub, {__call = LibStub.GetLibrary})
 end
 
+---@generic O : table | metatable | number | string | boolean | function
+---@param orig O
+---@return O
 function br.deepcopy(orig)
 	local orig_type = type(orig)
 	local copy

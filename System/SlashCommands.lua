@@ -1,6 +1,9 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Slash Commands
 ---------------------------------
+---@param msg string
 function br._G.print(msg)
 	if msg == nil then
 		return
@@ -9,6 +12,8 @@ function br._G.print(msg)
 	print(color .. "[BadRotations] |cffFFFFFF" .. msg)
 end
 br.commandHelp = {"|cffFF0000Slash Commands"}
+---@param cmd? string
+---@param msg? string
 function br.SlashCommandHelp(cmd, msg)
 	if cmd == nil then
 		cmd = ""
@@ -44,6 +49,10 @@ local function toggleUI()
 	end
 end
 
+---@param name string
+---@param index number
+---@param check? boolean
+---@return boolean | nil
 local function toggle(name, index, check)
 	local toggleFound = false
 	if check == nil then
@@ -75,6 +84,9 @@ local function toggle(name, index, check)
 	end
 end
 
+---@param name string
+---@param index1 number
+---@param index2 number
 local function toggleRange(name, index1, index2)
 	if br.data == nil then return end
 	if br.data.settings == nil then return end
@@ -148,6 +160,8 @@ function br:slashHelpList()
 end
 
 br:slashHelpList()
+---@param message string
+---@param editbox EditBox
 function br.handler(message, editbox)
 	local msg = string.lower(message)
 	local msg1 = getStringIndex(message, 1)
@@ -465,6 +479,8 @@ br._G.SlashCmdList["BR"] = br.handler
 
 -- macro used to gather caster/spell/buff on our actual target
 SLASH_dumpInfo1 = "/dumpinfo"
+---@param msg string
+---@param editbox EditBox
 function br._G.SlashCmdList.dumpInfo(msg, editbox)
 	-- find unit in our engines
 	for k, _ in pairs(br.enemy) do

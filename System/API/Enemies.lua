@@ -21,7 +21,9 @@
 --
 -- @module br.player.enemies
 
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 local function setVariable(self,unit,range,checkNoCombat,facing,type,table,count)
     if unit == nil then unit = "player" end
@@ -46,6 +48,7 @@ local function setVariable(self,unit,range,checkNoCombat,facing,type,table,count
     if self.enemies[insertTable] == nil then self.enemies[insertTable] = {} else br._G.wipe(self.enemies[insertTable]) end
     if count > 0 then br.insertTableIntoTable(self.enemies[insertTable],table) end
 end
+---@class BR.API.Enemies
 br.api.enemies = function(self)
     local enemies = self.enemies
     if enemies.cone == nil then enemies.cone = {} end

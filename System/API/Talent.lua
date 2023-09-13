@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 ----------------------
 --- ABOUT THIS API ---
@@ -6,7 +8,7 @@ if br.api == nil then br.api = {} end
 
 -- These calls help in retrieving information about talent based checks.
 -- talent is the table located at br.player.talent, call this in profile to use.
-
+---@class BR.API.Talent
 br.api.talent = function(talent,name,id,allTalents,spellList)
     if talent == nil then talent = {} end
     if talent[name] == nil then talent[name] = false end

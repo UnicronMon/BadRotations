@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- if canCast(12345,true)
 function br.canCast(SpellID,KnownSkip,MovementCheck, thisUnit)
 	if thisUnit == nil then thisUnit = "target" end
@@ -575,6 +577,16 @@ function br.isUnitCasting(unit)
 end
 
 local castTimers
+---@param thisUnit UnitId
+---@param castType? CastType
+---@param minUnits? number
+---@param effectRng? number
+---@param spellID number
+---@param index? number
+---@param predict? number
+---@param enemies? number
+---@param debug? boolean
+---@return boolean | nil
 function br.createCastFunction(thisUnit,castType,minUnits,effectRng,spellID,index,predict,predictPad,enemies,debug)
     -- Invalid Spell ID Check
 	if br._G.GetSpellInfo(spellID) == nil then br._G.print("Invalid Spell ID: "..spellID.." for key: "..index) end

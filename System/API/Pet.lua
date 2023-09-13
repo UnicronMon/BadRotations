@@ -1,5 +1,8 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
+---@class BR.API.Pets
 br.api.pets = function(pet,k,v,brplayer)
     -- Active Pet - EX: br.player.pet.active.exists()
     local petList = pet

@@ -3,9 +3,14 @@
 -- Buff functions are stored in br.player.buff and can be utilized by `local buff = br.player.buff` in your profile.
 -- `spell` in the function represent the name in the buffs list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
 -- @module br.player.buff
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
+---@class BR.API.Buffs
+---@param buff table
+---@param v number
 br.api.buffs = function(buff,v)
 
     --- Cancel a buff.

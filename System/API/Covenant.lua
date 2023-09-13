@@ -17,9 +17,12 @@
 -- @module br.player.covenant
 
 
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
+---@class BR.API.Covenant
 br.api.covenant = function(covenant)
     local activeID = br._G.C_Covenants.GetActiveCovenantID()
     if br._G.C_Covenants.GetActiveCovenantID() ~= nil then

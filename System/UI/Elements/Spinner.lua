@@ -1,6 +1,8 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
 local DiesalTools = _G.LibStub("DiesalTools-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.ui:createSpinner(parent, text, number, min, max, step, tooltip, tooltipSpin, hideCheckbox)
     -------------------------------
     ----Need to calculate Y Pos----

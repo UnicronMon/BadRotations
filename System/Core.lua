@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.engines = {}
 
 function br:getUpdateRate()

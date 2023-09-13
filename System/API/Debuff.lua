@@ -3,7 +3,9 @@
 -- Debuff functions are stored in br.player.debuff and can be utilized by `local debuff = br.player.debuff` in your profile.
 -- `spell` in the function represent the name in the debuffs list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
 -- @module br.player.debuff
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
 -- Local function needed to facilitate debuff.calc
@@ -59,6 +61,7 @@ local function getSnapshotValue(dot)
     return 0
 end
 
+---@class BR.API.Debuffs
 br.api.debuffs = function(debuff,k,v)
     local spec = br._G.GetSpecializationInfo(br._G.GetSpecialization())
 

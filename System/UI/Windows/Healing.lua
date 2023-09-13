@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- TODO: create new healing debug frame
 br.ui.window.healing = {}
 function br.ui:createHealingWindow()

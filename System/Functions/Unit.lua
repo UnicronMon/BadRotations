@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.GetObjectExists(Unit)
 	if Unit == nil then return false end
 	return br.GetUnitIsVisible(Unit)

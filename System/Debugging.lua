@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Provides functions to help debugging and profiling
 
 br.debug.cpu = {}
@@ -20,6 +22,8 @@ br.debug.cpu.healingEngine = {
     absorbANDhp = 0
 }
 -- Debug Timing - add local startTime = debugprofilestop() to start of function and call this at the end, pass a unique table name and the startTime variable.
+---@param startTime number
+---@param table string
 function br.debug.cpu:updateDebug(startTime, table)
     local startTime = startTime
     local endTime = br._G.debugprofilestop()
@@ -66,6 +70,8 @@ end
 
 --- Get Execution Speed
 --  Prints the time needed to run a function X times
+---@param cycles number
+---@param func function
 function br.debug.getEXspeed(cycles, func)
     local startTime = br._G.debugprofilestop()
 
@@ -81,6 +87,8 @@ end
 -- INTO TIMER LUA
 
 br.timer = {}
+---@param timerName string
+---@param interval number
 function br.timer:useTimer(timerName, interval)
     if self[timerName] == nil then
         self[timerName] = 0

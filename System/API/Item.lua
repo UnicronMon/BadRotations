@@ -4,9 +4,12 @@
 -- `item` in the function represent the name in the item list defined in System/List/Items.lua
 -- @module br.player.item
 
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
+---@class BR.API.Items
 br.api.items = function(item,k,v,subtable)
     if item[k] == nil then item[k] = {} end
 

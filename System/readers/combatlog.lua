@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.class = select(3, br._G.UnitClass("player"))
 br.guid = br._G.UnitGUID("player")
 -- specific reader location

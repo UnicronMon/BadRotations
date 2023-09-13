@@ -19,8 +19,11 @@
 -- * `br.player.essence.spellID` - Indicates the spellID of the essence.
 --
 -- @module br.player.covenant
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
+---@class BR.API.Essences
 br.api.essences = function(essence,k,v)
     -- Find Major/Minor/Active/Rank
     essence.active = false

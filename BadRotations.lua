@@ -1,6 +1,8 @@
 -- [[ Global Variables and Tables Initialization ]] --
 -- define br global that will hold the bot global background features
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br._G = setmetatable({}, {__index = _G})
 br.unlock = {}
 br.data = {}
@@ -76,6 +78,7 @@ function br.setAddonName()
 end
 
 -- Custom Print
+---@param message string
 function br.debugPrint(message)
 	if br.data.settings[br.selectedSpec].toggles["isDebugging"] == true then
 		br._G.print(message)
@@ -222,6 +225,7 @@ frame:RegisterEvent("PLAYER_LOGOUT")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("LOADING_SCREEN_ENABLED")
 frame:RegisterEvent("LOADING_SCREEN_DISABLED")
+---@param event WowEvent
 function frame:OnEvent(event)
 	if event == "LOADING_SCREEN_ENABLED" then
 		br.disablePulse = true

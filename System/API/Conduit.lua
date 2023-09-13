@@ -3,9 +3,12 @@
 -- Conduit data is stored in br.player.conduit and can be utilized by `local conduit = br.player.conduit` in your profile.
 -- `spell` in the table represent the name in the conduit list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
 -- @module br.player.conduit
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 
+---@class BR.API.Conduit
 br.api.conduit = function(conduit,spell,id)
     local soulbindID = br._G.C_Soulbinds.GetActiveSoulbindID()
     local soulbindData = br._G.C_Soulbinds.GetSoulbindData(soulbindID)

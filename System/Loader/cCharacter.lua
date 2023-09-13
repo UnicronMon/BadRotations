@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 --- Character Class
 -- All classes inherit from the base class /cCharacter.lua
 br.cCharacter = {}

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -----------------------------------------Bubba's Healing Engine--------------------------------------]]
 --Modified to enemies engine by fisker
 if not br.metaTable2 then

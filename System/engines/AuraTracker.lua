@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- ProbablyEngine Rotations
 -- Released under modified BSD, see attached LICENSE.
 

@@ -1,4 +1,6 @@
-﻿local _, br = ...
+﻿local _,
+---@class BR
+br = ...
 -- here we want to define functions to use with the healing profiles
 -- find best tank to put our lb/beacon/earth shield on
 function br.getFocusedTank()

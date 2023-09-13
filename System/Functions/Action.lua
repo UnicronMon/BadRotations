@@ -1,9 +1,12 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.canFly()
 	return br._G.IsOutdoors() and br._G.IsFlyableArea()
 end
 
 -- if canHeal("target") then
+---@param Unit UnitId
 function br.canHeal(Unit)
 	if
 		br.GetUnitExists(Unit) and br._G.UnitInRange(Unit) == true and br._G.UnitCanCooperate("player", Unit) and not br._G.UnitIsEnemy("player", Unit) and not br._G.UnitIsCharmed(Unit) and

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Functions from coders for public use
 local sqrt, cos, sin = math.sqrt, math.cos, math.sin
 --[[                                                                                                ]]

@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- TODO: create new debug frame
 br.ui.window.debug = {}
 function br.ui:createDebugWindow()

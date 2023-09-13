@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Sell Greys Macros
 SLASH_Greys1 = "/grey"
 SLASH_Greys2 = "/greys"
@@ -32,6 +34,7 @@ SLASH_DumpGrey2 = "/dg"
 function br._G.SlashCmdList.DumpGrey(msg, editbox)
 	br.DumpGreys(1)
 end
+---@param Num number
 function br.DumpGreys(Num)
 	local greyTable = {}
 	for bag = 0, 4 do
@@ -71,6 +74,7 @@ end
 br.lootManager = {}
 br.lM = br.lootManager
 -- Debug
+---@param message string
 function br.lootManager:debug(message)
 	if message and br.lM.oldMessage ~= message then
 		br.addonDebug("<lootManager> " .. (math.floor(br._G.GetTime() * 1000) / 1000) .. " " .. message, true)
@@ -90,6 +94,7 @@ function br.lootManager:emptySlots()
 end
 
 local looting = false
+---@param lootUnit UnitId
 function br.lootManager:getLoot(lootUnit)
 	-- if we have a unit to loot, check if its time to
 	if br.timer:useTimer("getLoot", br.getOptionValue("Auto Loot")) then

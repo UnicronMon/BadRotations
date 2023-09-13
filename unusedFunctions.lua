@@ -1,5 +1,7 @@
 -- Currently not used functions
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.IGetLocation(Unit)
     return br.GetObjectPosition(Unit)
 end

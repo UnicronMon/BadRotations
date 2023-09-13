@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 br.queueSpell = false
 local queueSpellTime
 local queueSpellPos = {x = 0, y = 0, z = 0}

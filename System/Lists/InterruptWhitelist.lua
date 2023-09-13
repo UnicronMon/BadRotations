@@ -1,9 +1,113 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.lists == nil then
 	br.lists = {}
 end
 -- Interrupt Whitelist - A list of spells we know for sure we want to interrupt (Typically in Dungeons and Raids)
 br.lists.interruptWhitelist = {
+	-- Underrot Start
+	[260879] = true, -- Blood Bolt
+	[265089] = true, -- Dark Reconstituion
+	[265091] = true, -- Gift of Ghuun
+	[265433] = true, -- Withering Curse
+	[265487] = true, -- Shadow Bolt Volley
+	[265668] = true, -- Wave of Decay (low prio)
+	[266106] = true, -- Sonic Screech
+	[266201] = true, -- Bone Shield
+	[266209] = true, -- WickedFrenzy
+	[272180] = true, -- Void Spit
+	[272183] = true, -- Raise Dead
+	[278755] = true, -- Harrowing Despair
+	[278961] = true, -- Decaying Mind
+	[413044] = true, -- Dark Echoes
+	[265084] = true, -- Blood Bolt
+	[265377] = true, -- Hooked Snare
+	-- Underrot Start
+	-- Freehold Start
+	[256060] = true, -- Revitalizing Brew
+	[263274] = true, -- Revitalizing Brew
+	[257784] = true, -- Frost Blast
+	[257397] = true, -- Healing Balm
+	[281420] = true, -- Water Bolt
+	[257732] = true, -- Shattering Blow
+	[257736] = true, -- Thundering Squall
+	[257899] = false, -- Painful Motivation
+	[274507] = true, -- Slippery Suds
+	[258777] = true, -- Sea Spout
+	-- Freehold End
+	-- Brakenhide Hollow Start
+	[374544] = true, -- Burst of Decay
+	[382474] = true, -- Decay Surge
+	[381770] = true, -- Gushing Ooze
+	[373804] = true, -- Touch of Decay
+	[385029] = true, -- Screech
+	[378155] = true, -- Earth Bolt low prio
+	[377950] = true, -- Greater Healing Rapids
+	[367500] = true, -- Hideous Cackle
+	[382249] = true, -- Earth Bolt
+	[384638] = true, -- Masters Call
+	[382712] = true, -- GTFO
+	-- Brakenhide Hollow End
+	-- Halls of Infusion Start
+	[375384] = true, -- Rumbling Earth
+	[374563] = true, -- Dazzle
+	[375950] = true, -- Ice Shards
+	[374080] = true, -- Blasting Gust
+	[374045] = true, -- Expulse
+	[374339] = true, -- Demo Shout
+	[374066] = true, -- Earth Shield
+	[395694] = true, -- Elemental Focus
+	[374699] = true, -- Cauterize
+	[374706] = true, -- Pyretic Burst
+	[377341] = true, -- Tidal Divergence
+	[377402] = true, -- Aqueous Barrier
+	[376171] = true, -- Refreshing Tides
+	-- Halls of Infusion End
+	-- Uldaman Start
+	[369400] = true, -- Earthen Ward
+	[369602] = true, -- Defensive Bulwark
+	[369675] = true, -- ChainLightning
+	[369674] = true, -- StoneSpike
+	[369823] = true, -- SpikedCarapace
+	[369399] = true, -- StoneBolt
+	[369365] = true, -- CurseofStoneKick
+	[369411] = true, -- SonicBurst
+	[377500] = true, -- Hasten
+	-- Uldaman End
+	-- Nelt Start
+	[395427] = true, -- Burning Roar
+	[372615] = true, -- Ember Reach
+	[396925] = true, -- Lava Bolt
+	[378282] = true,
+	[384161] = true,
+	[372223] = true,
+	[383651] = true,
+	-- Nelt End
+	-- VP Start
+	[188196] = true, -- Lightning Bolt
+	[88170] = true, -- Cloud Burst
+	[410870] = true, -- Cyclone
+	[87779] = true, -- Greater Heal
+	-- VP End
+	-- NL Start
+	[202181] = true, -- Stone Gaze
+	[193585] = true, -- Bound
+	[186269] = true, -- Stone Bolt
+	-- NL End
+	-- DOTI Start
+	[415770] = true,
+	[411994] = true,
+	[415435] = true,
+	[415437] = true,
+	[411958] = true,
+	[400165] = true,
+	[412922] = true,
+	[417481] = true,
+	[412378] = true,
+	[412233] = true,
+	[413427] = true,
+	-- DOTI End
 	-- Torghast start
 	[258935] = true, -- Inner Flames
 	[329422] = true, -- Inner Flames
@@ -154,7 +258,7 @@ br.lists.interruptWhitelist = {
 	[268797] = true, -- EnemyToGoo
 	[262092] = true, -- InhaleVapors
 	[280604] = true, -- ice-spritzer
-	[265089] = true, -- dark-reconstitution
+--[[ 	[265089] = true, -- dark-reconstitution
 	[278755] = true, -- harrowing-despair
 	[260879] = true, -- blood-bolt
 	[278961] = true, -- decaying-mind
@@ -162,15 +266,15 @@ br.lists.interruptWhitelist = {
 	[272183] = true, -- raise-dead
 	[265433] = true, -- withering-curse
 	[272180] = true, -- death-bolt
-	[266106] = true, -- sonic screech
+	[266106] = true, -- sonic screech ]]
 	[265523] = true, -- spiritdraintotem
-	[265091] = true, -- gift of ghuun
-	[257397] = true, -- healing-balm
-	[258777] = true, -- sea-spout
-	[257732] = true, -- shattering-bellow
+--[[ 	[265091] = true, -- gift of ghuun ]]
+--[[ 	[257397] = true, -- healing-balm ]]
+	--[258777] = true, -- sea-spout
+--[[ 	[257732] = true, -- shattering-bellow
 	[257736] = true, -- thundering-squall
 	[256060] = true, -- revitalizing-brew
-	[257784] = true, -- Frostblast
+	[257784] = true, -- Frostblast ]]
 	[265368] = true, -- spirited-defense
 	[263891] = true, -- grasping-thorns
 	[266035] = true, -- bone-splinter
@@ -252,7 +356,7 @@ br.lists.interruptWhitelist = {
 	[192288] = true, -- Searing Light
 	[192563] = true, -- Cleansing Flames
 	[193069] = true, -- Nightmares
-	[193585] = true, -- Bound
+--[[ 	[193585] = true, -- Bound ]]
 	[194266] = true, -- Void Snap
 	[194657] = true, -- Soul Siphon
 	[195046] = true, -- Rejuvenating Waters
@@ -280,7 +384,7 @@ br.lists.interruptWhitelist = {
 	[200905] = true, -- Sap Soul
 	[201400] = true, -- Dread Inferno
 	[201488] = true, -- Frightening Shout
-	[202181] = true, -- Stone Gaze
+--[[ 	[202181] = true, -- Stone Gaze ]]
 	[202658] = true, -- Drain
 	[203176] = true, -- Accelerating Blast
 	[203957] = true, -- Time Lock

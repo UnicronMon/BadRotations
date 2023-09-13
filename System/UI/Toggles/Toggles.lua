@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- this handles old profiles buttons
 function br.TogglesFrame()
 	br.GarbageButtons()

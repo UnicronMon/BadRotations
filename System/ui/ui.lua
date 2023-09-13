@@ -1,5 +1,7 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Global setup
 br.ui = {}
 br.spacing = 15

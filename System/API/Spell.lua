@@ -1,10 +1,13 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 if br.api == nil then br.api = {} end
 -- cd is the table located at br.player.cd
 -- charges is the table located at br.player.charges
 -- cast is the table located at br.player.cast
 -- v is the spellID passed from the builder which cycles all the collected ability spells from the spell list for the spec
 -- spell in the examples represent the name in the ability list (Spec, Shared Class, Shared Global Lists) defined in System/List/Spells.lua
+---@class BR.API.Spells
 br.api.spells = function(spells,k,v,subtable)
     if subtable == "known" then
         if spells.known == nil then spells.known = {} end

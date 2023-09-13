@@ -1,5 +1,7 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.ui:createSection(parent, sectionName, tooltip)
     local newSection = DiesalGUI:Create("AccordianSection")
     local parent = parent

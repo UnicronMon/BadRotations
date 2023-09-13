@@ -1,5 +1,7 @@
 local DiesalGUI = _G.LibStub("DiesalGUI-1.0")
-local _, br = ...
+local _,
+---@class BR
+br = ...
 -- Dropdown for pages
 -- todo: save last active page and restore
 function br.ui:createPagesDropdown(window, menuPages)

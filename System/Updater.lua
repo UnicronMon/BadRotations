@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 ----------------------------------------------------------------------------------------------------
 -- Variables
 ----------------------------------------------------------------------------------------------------
@@ -20,6 +22,7 @@ local function IsSettingChecked()
    return br.isChecked("Auto Check for Updates")
 end
 
+---@param msg string
 local function Print(msg)
    if msg == nil then
       return
@@ -27,6 +30,7 @@ local function Print(msg)
    print(br.classColor .. "[BadRotations] |cffFFFFFF" .. msg)
 end
 
+---@param msg string
 local function PrintError(msg)
    if msg == nil then
       return
@@ -34,12 +38,15 @@ local function PrintError(msg)
    print(br.classColor .. "[BadRotations] |cffff6666" .. msg)
 end
 
+---@param message string
 local function RaidWarning(message)
    if br.isChecked("Overlay Messages") then
       br._G.RaidNotice_AddMessage(br._G.RaidWarningFrame, message, {r = 1, g = 0.3, b = 0.1})
    end
 end
 
+---@param url string
+---@param OnComplete fun(body: string, code: number, req: table, res: number, err: string)
 local function SendRequestAsync(url, OnComplete)
    br._G.SendHTTPRequest(
       url,
@@ -68,6 +75,8 @@ end
 ----------------------------------------------------------------------------------------------------
 -- Check for Updates
 ----------------------------------------------------------------------------------------------------
+
+---@param OnComplete fun(body: string, code: number, req: table, res: number, err: string)
 local function SetLatestCommitAsync(OnComplete)
    local url = apiUrl .. "commits/latest"
 
@@ -83,6 +92,7 @@ local function SetLatestCommitAsync(OnComplete)
    )
 end
 
+---@param OnComplete? fun(json?: string)
 local function CheckForUpdatesAsync(OnComplete)
    SetLatestCommitAsync(
       function()
@@ -175,6 +185,7 @@ local function GetAddonName()
    end
 end
 
+---@param latestCommit string
 local function InitCurrentCommit(latestCommit)
    local headFile = addonPath .. ".git\\refs\\heads\\master"
    local headContent = br._G.ReadFile(headFile)

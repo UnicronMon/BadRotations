@@ -1,4 +1,6 @@
-local _, br = ...
+local _,
+---@class BR
+br = ...
 function br.castInterrupt(SpellID,Percent,Unit)
 	Percent = br._G.Math.min(Percent + math.random(-6, 6), 99)
 	if Unit == nil then Unit = "target" end
