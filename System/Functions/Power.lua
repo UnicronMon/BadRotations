@@ -32,7 +32,7 @@ end
 -- if br.getPower("target") <= 15 then
 function br.getPower(Unit, index)
 	local value = br._G.UnitPower(Unit, index)
-	if select(3, br._G.UnitClass("player")) == 11 or select(3, br._G.UnitClass("player")) == 4 then
+	if index == 3 and select(3, br._G.UnitClass("player")) == 11 or select(3, br._G.UnitClass("player")) == 4 then
 		if --[[br.UnitBuffID("player", 106951) or]] br.UnitBuffID("player", 102543) then
 			value = br._G.UnitPower(Unit, index) * 1.2
 		end
@@ -41,7 +41,7 @@ function br.getPower(Unit, index)
 end
 function br.getPowerMax(Unit, index)
 	local value = br._G.UnitPowerMax(Unit, index)
-	if select(3, br._G.UnitClass("player")) == 11 or select(3, br._G.UnitClass("player")) == 4 then
+	if index == 3 and select(3, br._G.UnitClass("player")) == 11 or select(3, br._G.UnitClass("player")) == 4 then
 		if --[[br.UnitBuffID("player", 106951) or]] br.UnitBuffID("player", 102543) then
 			value = br._G.UnitPowerMax(Unit, index) * 1.2
 		end
