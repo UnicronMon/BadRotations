@@ -630,9 +630,9 @@ local markOfTheWildOptions = {
 -- Variables
 ---@class var.ticksGain : { [DotSpellNames] : number }
 var.ticksGain            = {
-    rake = 0,      -- 5
-    rip = 0,       -- 12
-    thrashCat = 0, -- 5
+    rake = 5,      -- 5
+    rip = 12,       -- 12
+    thrashCat = 5, -- 5
     primalWrath = 0,
     moonfireCat = 0
 }
@@ -676,8 +676,22 @@ var.stats                = {
 }
 
 var.multipliers          = {
-    tigersFury = 1,
+    tigersFury = function()
+        return 1.15 + (talent.rank.carnivorousInstinct * 0.06)
+    end,
+    bloodtalons = function()
+        return 1.3
+    end,
+    clearcasting = function()
+        return talent.momentOfClarity and 1.15 or 1
+    end,
+    berserk = function()
+        return 1.5
+    end,
+    prowlBase = function() return talent.pouncingStrikes and 1.6 or 1 end
 }
+
+var.persistentMultiplier = 1
 
 var.enemies              = {}
 
@@ -778,7 +792,7 @@ var.units                = {}
 
 var.ui                   = {}
 
-var.zerk_biteweave       = true
+var.zerk_biteweave       = false
 
 
 -----------------
@@ -798,6 +812,10 @@ end
 ---@return boolean
 local shouldStealth = function()
     return not isStealthed() and canCastStealth()
+end
+
+local effectiveStealth = function()
+    return isStealthed() or buff.suddenAmbush.exists()
 end
 
 local function autoProwl()
@@ -900,6 +918,25 @@ local getMarkUnit = function(option)
     return "player"
 end
 
+local tf_spells = { rake = true, rip = true, thrashCat = true, moonfireCat = true, primalWrath = true }
+local bt_spells = { rip = true, primalWrath = true }
+local mc_spells = { thrashCat = true }
+local pr_spells = { rake = true }
+local bs_spells = { rake = true }
+
+---@param act 'rake' | 'rip' | 'thrashCat' | 'moonfireCat' | 'primalWrath'
+local persistentMultiplier = function( act )
+    local mult = 1
+
+    if not act then return mult end
+    if tf_spells[ act ] and buff.tigersFury.exists() then mult = mult * var.multipliers.tigersFury() end
+    if bt_spells[ act ] and buff.bloodtalons.exists() then mult = mult * var.multipliers.bloodtalons() end
+    if mc_spells[ act ] and talent.momentOfClarity and buff.clearcasting.exists() then mult = mult * var.multipliers.clearcasting() end
+    if pr_spells[ act ] and effectiveStealth() then mult = mult * var.multipliers.prowlBase() end
+    if bs_spells[ act ] and talent.berserk and var.bsIncUp then mult = mult * var.multipliers.berserk() end
+
+    return mult
+end
 
 --------------------
 --- Action Lists ---
@@ -1191,7 +1228,7 @@ actionList.def = function()
     if cast.able.rake() and isStealthed() and var.range.dyn5 then
         for i = 1, #var.enemies.yards5f do
             local thisUnit = var.enemies.yards5f[i]
-            if (debuff.rake.calc(thisUnit) >= debuff.rake.applied(thisUnit)) then
+            if (persistentMultiplier('rake') > debuff.rake.pmultiplier(thisUnit)) then
                 if cast.rake(thisUnit) then
                     ui.debug("Casting Rake [def] - 6")
                     return true
@@ -1271,7 +1308,7 @@ actionList.aoe_builder = function()
         end
     end
     -- 2 thrash_cat,target_if=refreshable,if=buff.clearcasting.react|(spell_targets.thrash_cat>10|(spell_targets.thrash_cat>5&!talent.double_clawed_rake.enabled))&!talent.thrashing_claws
-    if cast.able.thrashCat() and (debuff.thrashCat.refresh(var.units.dyn8AOE)) and (buff.clearcasting.exists() or (#var.enemies.yards8 > 10 or (#var.enemies.yards8 > 5 and not talent.doubleClawedRake))) then
+    if cast.able.thrashCat() and buff.clearcasting.react() or (#var.enemies.yards8 > 10 or (#var.enemies.yards8 > 5 and not talent.doubleClawedRake)) and not talent.thrashingClaws then
         if cast.thrashCat() then
             ui.debug("Casting Thrash [aoe_builder] - 2")
             return true
@@ -1294,16 +1331,16 @@ actionList.aoe_builder = function()
         end
     end
     -- 5 rake,target_if=max:druid.rake.ticks_gained_on_refresh,if=buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier
-    if cast.able.rake(var.maxRakeTicksGainUnit) and buff.suddenAmbush.exists() and (debuff.rake.calc(var.maxRakeTicksGainUnit) >= debuff.rake.applied(var.maxRakeTicksGainUnit)) then
+    if cast.able.rake(var.maxRakeTicksGainUnit) and buff.suddenAmbush.exists() and (persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit)) then
         if cast.rake(var.maxRakeTicksGainUnit) then
-            ui.debug("Casting Rake [aoe_builder] - 5")
+            ui.debug("Casting Rake [aoe_builder] - 5" .. var.maxRakeTicksGainUnit)
             return true
         end
     end
     -- 6 rake,target_if=buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier|refreshable
-    if cast.able.rake(var.maxRakeTicksGainUnit) and buff.suddenAmbush.exists() and debuff.rake.applied(var.maxRakeTicksGainUnit) < 1.4 then
+    if cast.able.rake(var.maxRakeTicksGainUnit) and buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit) or debuff.rake.refresh(var.maxRakeTicksGainUnit) then
         if cast.rake(var.maxRakeTicksGainUnit) then
-            ui.debug("Casting Rake [aoe_builder] - 6")
+            ui.debug("Casting Rake [aoe_builder] - 6" .. var.maxRakeTicksGainUnit)
             return true
         end
     end
@@ -1343,7 +1380,7 @@ actionList.aoe_builder = function()
         end
     end
     -- 11 shred,target_if=max:target.time_to_die,if=(spell_targets.swipe_cat<4|talent.dire_fixation.enabled)&!buff.sudden_ambush.up&!(variable.lazy_swipe&talent.wild_slashes)
-    if cast.able.shred() and (not buff.suddenAmbush.exists() and not (var.lazySwipe and talent.wildSlashes)) then
+    if cast.able.shred() and (#var.enemies.yards5f < 4 or talent.direFixation) and not buff.suddenAmbush.exists() and not talent.wildSlashes then
         if cast.shred() then
             ui.debug("Casting Shred [aoe_builder] - 12")
             return true
@@ -1399,8 +1436,7 @@ actionList.berserk = function()
         end
     end
     -- 6 rake,if=!(buff.bt_rake.up&active_bt_triggers=2)&(refreshable|(buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier))
-    if cast.able.rake(var.maxRakeTicksGainUnit) and not (bt.rake and bt.triggers == 2)
-        and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or (buff.suddenAmbush.exists() and debuff.rake.calc(var.maxRakeTicksGainUnit) > 1.4))
+    if cast.able.rake(var.maxRakeTicksGainUnit) and not (bt.rake and bt.triggers == 2) and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or (buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit)))
     then
         if cast.rake(var.maxRakeTicksGainUnit) then
             ui.debug("Casting Rake [berserk] - 6")
@@ -1474,16 +1510,16 @@ actionList.bloodtalons = function()
 
     -- 3 shadowmeld,if=action.rake.ready&!buff.sudden_ambush.up&(dot.rake.refreshable|dot.rake.pmultiplier<1.4)&!buff.prowl.up&buff.bt_rake.down&cooldown.feral_frenzy.remains<44&!buff.apex_predators_craving.up
     -- 4 rake,target_if=max:druid.rake.ticks_gained_on_refresh,if=(refreshable|buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier)&buff.bt_rake.down
-    if cast.able.rake(var.maxRakeTicksGainUnit) and ((debuff.rake.refresh(var.maxRakeTicksGainUnit) or buff.suddenAmbush.exists()) and not bt.rake) then
+    if cast.able.rake(var.maxRakeTicksGainUnit) and ((debuff.rake.refresh(var.maxRakeTicksGainUnit) or buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit)) and not bt.rake) then
         if cast.rake(var.maxRakeTicksGainUnit) then
-            ui.debug("Casting Rake [bloodtalons - 4]")
+            ui.debug("Casting Rake [bloodtalons - 4]" .. var.maxRakeTicksGainUnit)
             return true
         end
     end
     -- 5 rake,target_if=buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier&buff.bt_rake.down
-    if cast.able.rake(var.maxRakeTicksGainUnit) and (buff.suddenAmbush.exists() and not bt.rake) then
+    if cast.able.rake(var.maxRakeTicksGainUnit) and buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit) and not bt.rake then
         if cast.rake(var.maxRakeTicksGainUnit) then
-            ui.debug("Casting Rake [bloodtalons - 5]")
+            ui.debug("Casting Rake [bloodtalons - 5]" .. var.maxRakeTicksGainUnit)
             return true
         end
     end
@@ -1523,7 +1559,7 @@ actionList.bloodtalons = function()
         end
     end
     -- shred,if=buff.bt_shred.down&spell_targets.swipe_cat=1&(!talent.wild_slashes.enabled|(!debuff.dire_fixation.up&talent.dire_fixation.enabled))
-    if cast.able.shred() and not bt.shred and #var.enemies.yards8 == 1 and (not talent.wildSlashes or (not debuff.direFixation.exists() and talent.direFixation)) then
+    if cast.able.shred() and not bt.shred and #var.enemies.yards5f == 1 and (not talent.wildSlashes or (not debuff.direFixation.exists() and talent.direFixation)) then
         if cast.shred() then
             ui.debug("Casting Shred [bloodtalons - 11]")
             return true
@@ -1558,7 +1594,7 @@ actionList.bloodtalons = function()
         end
     end
     -- shred,target_if=max:target.time_to_die,if=(spell_targets>5|talent.dire_fixation.enabled)&buff.bt_shred.down&!buff.sudden_ambush.up&!(variable.lazy_swipe&talent.wild_slashes)
-    if cast.able.shred() and not bt.shred and (buff.suddenAmbush.exists() or (talent.wildSlashes and var.lazySwipe)) then
+    if cast.able.shred() and (#var.enemies.yards5f > 5 or talent.direFixation) and not bt.shred and not buff.suddenAmbush.exists() and not talent.wildSlashes then
         if cast.shred() then
             ui.debug("Casting Shred [bloodtalons - 16]")
             return true
@@ -1572,9 +1608,9 @@ actionList.bloodtalons = function()
         end
     end
     -- rake,target_if=min:(25*(persistent_multiplier<dot.rake.pmultiplier)+dot.rake.remains),if=buff.bt_rake.down&(spell_targets.swipe_cat>4&!talent.dire_fixation|talent.wild_slashes&variable.lazy_swipe)
-    if cast.able.rake(var.maxRakeTicksGainUnit) and not bt.rake then
+    if cast.able.rake(var.maxRakeTicksGainUnit) and not bt.rake and (#var.enemies.yards5f > 4 and not talent.direFixation or talent.wildSlashes) then
         if cast.rake(var.maxRakeTicksGainUnit) then
-            ui.debug("Casting Rake [bloodtalons - 18]")
+            ui.debug("Casting Rake [bloodtalons - 18]" .. var.maxRakeTicksGainUnit)
             return true
         end
     end
@@ -1598,6 +1634,12 @@ actionList.builder = function()
         end
     end
     -- pool_resource,if=!action.rake.ready&(dot.rake.refreshable|(buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier&dot.rake.remains>6))&!buff.clearcasting.react
+    if not cast.able.rake(var.maxRakeTicksGainUnit) and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or (buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit) and debuff.rake.remain(var.maxRakeTicksGainUnit) > 6)) and not buff.clearcasting.react() then
+        if cast.pool.rake() then
+            ui.debug("Pooling for Rake [Builder] - 3" .. var.maxRakeTicksGainUnit)
+            return true
+        end
+    end
     --[[     if not cast.able.rake(var.maxRakeTicksGainUnit) and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or (buff.suddenAmbush.exists() and debuff.rake.calc(var.maxRakeTicksGainUnit) > 1.4 and debuff.rake.remain(var.maxRakeTicksGainUnit) > 6)) and not buff.clearcasting.react() then
         if cast.rake(var.maxRakeTicksGainUnit) then ui.debug("Casting Rake [Builder] - 2") return true end
     end ]]
@@ -1612,9 +1654,9 @@ actionList.builder = function()
         end
     end
     -- rake,if=refreshable|(buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier)
-    if cast.able.rake(var.maxRakeTicksGainUnit) and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or (buff.suddenAmbush.exists() and debuff.rake.calc(var.maxRakeTicksGainUnit) > 1.4)) then
+    if cast.able.rake(var.maxRakeTicksGainUnit) and buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit) then
         if cast.rake(var.maxRakeTicksGainUnit) then
-            ui.debug("Casting Rake [builder] - 5")
+            ui.debug("Casting Rake [builder] - 5" .. var.maxRakeTicksGainUnit)
             return true
         end
     end
@@ -1848,8 +1890,6 @@ actionList.variables = function()
     var.stats.mastery_value = GetMasteryEffect() / 100
     var.stats.versatility_atk_mod = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) / 100
 
-    var.multipliers.tigersFury = 1.15 + talent.rank.carnivorousInstinct * 0.06
-
     if not unit.inCombat() and not unit.exists("target") then
         if var.profileStop then var.profileStop = false end
         var.leftCombat = var.getTime
@@ -1860,16 +1900,11 @@ actionList.variables = function()
     var.noDoT = var.unit5ID == 153758 or var.unit5ID == 156857 or var.unit5ID == 156849 or var.unit5ID == 156865 or
     var.unit5ID == 156869
 
-    var.bsIncRemain = 0
-    if buff.berserk.exists() then
-        var.bsIncRemain = buff.berserk.remain()
-    elseif buff.incarnationAvatarOfAshamane.exists() then
-        var.bsIncRemain = buff.incarnationAvatarOfAshamane.remain()
-    end
+    var.bsIncRemain = buff.berserk.exists() and buff.berserk.remain() or buff.incarnationAvatarOfAshamane.exists() and buff.incarnationAvatarOfAshamane.remain() or 0
 
-    var.bsIncUp = buff.berserk.exists() or buff.incarnationAvatarOfAshamane.exists()
+    var.bsIncUp = var.bsIncRemain > 0
 
-    var.doubleClawedRake = talent.doubleClawedRake and 1 or 0
+    --var.doubleClawedRake = talent.doubleClawedRake and 1 or 0
 
     var.solo = #br.friend < 2
     var.friendsInRange = false
@@ -1882,8 +1917,7 @@ actionList.variables = function()
         end
     end
 
-    var.fbMaxEnergy = var.energy >= 50 or buff.apexPredatorsCraving.exists() or
-    (var.energy >= 25 and (buff.berserk.exists() or buff.incarnationAvatarOfAshamane.exists()))
+    var.fbMaxEnergy = var.energy >= 50 * ((buff.incarnationAvatarOfAshamane.exists() and 0.8 or 1) * (talent.relentlessPredator and 0.8 or 1))
 
     var.ticksGain.rake = var.ticks.gain("rake", "target") --var.rakeTicksGain(thisUnit)
 
