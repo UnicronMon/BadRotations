@@ -24,7 +24,7 @@ br.api.cast = function(self,spell,id)
     ---@field dispel table<string, fun(): boolean>
     ---@field empowered table<string, fun(): boolean>
     ---@field inFlight table<string, fun(): boolean>
-    ---@field inFlightRemain table<string, fun(): number>
+    ---@field inFlightRemain table<string, fun(thisUnit?: UnitId): number>
     ---@field last { [string]: fun(): boolean, time: table<string, fun(): number>}
     ---@field [string] table<string, fun(thisUnit?:UnitId, castType: CastType, minUnits?: number, effectRng?: number, predict?:boolean, predictPad?:boolean, enemies?:table): boolean | nil>
     ---@field noControl table<string, fun(): boolean>

@@ -876,6 +876,7 @@ br.lists.spells = {
                 feralFrenzy                 = 274837,
                 primalWrath                 = 285381,
                 tigersFury                  = 5217,
+                adaptiveSwarm               = 391888,
             },
             artifacts  = {
 
@@ -900,6 +901,7 @@ br.lists.spells = {
                 mattedFur                   = 385787,
                 overflowingPower            = 405189,
                 predatorySwiftness          = 69369,
+                predatorRevealed            = 408468,
                 sabertooth                  = 391722,
                 savageRoar                  = 52610,
                 scentOfBlood                = 285646,
