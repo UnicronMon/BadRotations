@@ -120,7 +120,10 @@ function br.ui:createDropdown(parent, text, itemlist, default, tooltip, tooltipD
     ----------------------------
     --------END Dropdown--------
     ----------------------------
-
+    if not _G.dropdownLists then
+        _G.dropdownLists = {}
+    end
+    _G.dropdownLists[#_G.dropdownLists+1] = {dropdown = newDropdown, checkBox = checkBox}
     return newDropdown, checkBox
 end
 

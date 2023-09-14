@@ -69,7 +69,9 @@ br.api.module = function(self)
         -- Abilities - Call, module.BasicHealing(), in your rotation to use these
         if section == nil then
             -- Health Potion / Stones
-            if ui.checked("Healthstone/Potion") and unit.inCombat() and unit.hp() <= ui.value("Healthstone/Potion") then
+            local healthPotCd = GetItemCooldown(191380)
+            local healstoneCd = GetItemCooldown(5512)
+            if ui.checked("Healthstone/Potion") and unit.inCombat() and unit.hp() <= ui.value("Healthstone/Potion") and (healthPotCd == 0 or healstoneCd == 0) then
                 -- Lock Candy
                 if use.able.healthstone() and has.healthstone() then
                     if use.healthstone() then ui.debug("Using Healthstone") return true end
@@ -84,45 +86,6 @@ br.api.module = function(self)
                     use.item(healPot)
                     ui.debug("Using "..var.getItemInfo(healPot))
                     return true
-                end
-            end
-            -- Heirloom Neck
-            if ui.checked("Heirloom Neck") and unit.hp() <= ui.value("Heirloom Neck") and not unit.inCombat() then
-                if use.able.heirloomNeck() and item.heirloomNeck ~= 0 and item.heirloomNeck ~= item.manariTrainingAmulet then
-                    if use.heirloomNeck() then ui.debug("Using Heirloom Neck") return true end
-                end
-            end
-            -- Gift of the Naaru
-            if ui.checked("Gift of the Naaru") and unit.race() == "Draenei"
-                and unit.inCombat() and unit.hp() <= ui.value("Gift of the Naaru")
-            then
-                if cast.racial() then ui.debug("Casting Gift of the Naaru") return true end
-            end
-            -- Music of Bastion
-            if ui.checked("Music of Bastion") and (br.isInArdenweald() or br.isInBastion() or br.isInMaldraxxus() or br.isInRevendreth()) then
-                if use.able.ascendedFlute() and has.ascendedFlute() then
-                    if use.ascendedFlute() then ui.debug("Using Ascended Flute") return true end
-                end
-                if use.able.benevolentGong() and has.benevolentGong() then
-                    if use.benevolentGong() then ui.debug("Using Benevolent Gong") return true end
-                end
-                if use.able.heavenlyDrum() and has.heavenlyDrum() then
-                    if use.heavenlyDrum() then ui.debug("Using Heavenly Drum") return true end
-                end
-                if use.able.kyrianBell() and has.kyrianBell() then
-                    if use.kyrianBell() then ui.debug("Using Kyrian Bell") return true end
-                end
-                if use.able.unearthlyChime() and has.unearthlyChime() then
-                    if use.unearthlyChime() then ui.debug("Using Unearthly Chime") return true end
-                end
-            end
-            -- Phial of Serenity
-            if ui.checked("Phial of Serenity") then
-                if ui.checked("Auto Summon Steward") and not unit.inCombat() and not has.phialOfSerenity() and cast.able.summonSteward() then
-                    if cast.summonSteward() then ui.debug("Casting Call Steward") return true end
-                end
-                if unit.inCombat() and use.able.phialOfSerenity() and unit.hp() < ui.value("Phial of Serenity") then
-                    if use.phialOfSerenity() then ui.debug("Using Phial of Serenity") return true end
                 end
             end
         end
@@ -156,7 +119,7 @@ br.api.module = function(self)
     end
 
     -- Flask Module
-    module.FlaskUp = function(buffType,section)
+    module.FlaskUp = function(buffType, section)
         local function getFlaskByType(buff)
             local thisFlask = ""
             if buff == "Agility" then thisFlask = "Greater Flask of the Currents" end
@@ -256,6 +219,150 @@ br.api.module = function(self)
                 then
                     cancelFlaskBuff()
                     if use.oraliusWhisperingCrystal() then ui.debug("Using Oralius's Whispering Crystal") return true end
+                end
+            end
+        end
+    end
+
+    -- Potion Module
+    module.Potion = function(section)
+        local moduleName = "Potion"
+        local potions = {
+            ElementalUltimate = {
+                key = "elementalPotionOfUltimatePower",
+                name = "Elemental Potion of Ultimate Power",
+                ranks = {
+                    [1] = 191381,
+                    [2] = 191382,
+                    [3] = 191383,
+                },
+                fleeting = {
+                    [1] = 191912,
+                    [2] = 191913,
+                    [3] = 191914,
+                }
+            },
+            ElementalPower = {
+                key = "elementalPotionOfPower",
+                name = "Elemental Potion of Power",
+                ranks = {
+                    [1] = 191387,
+                    [2] = 191388,
+                    [3] = 191389,
+                },
+                fleeting = {
+                    [1] = 191905,
+                    [2] = 191906,
+                    [3] = 191907,
+                }
+            },
+            AeratedMana = {
+                key = "aeratedManaPotion",
+                name = "Aerated Mana Potion",
+                ranks = {
+                    [1] = 191384,
+                    [2] = 191385,
+                    [3] = 191386,
+                },
+            },
+            BottledPutresence = {
+                key = "bottledPutresence",
+                name = "Bottled Putresence",
+                ranks = {
+                    [1] = 191360,
+                    [2] = 191361,
+                    [3] = 191362,
+                },
+            },
+            DelicateSuspension = {
+                key = "delicateSuspensionOfSpores",
+                name = "Delicate Suspension of Spores",
+                ranks = {
+                    [1] = 191375,
+                    [2] = 191376,
+                    [3] = 191377,
+                },
+            },
+            ChilledClarity = {
+                key = "potionOfChilledClarity",
+                name = "Potion of Chilled Clarity",
+                ranks = {
+                    [1] = 191366,
+                    [2] = 191367,
+                    [3] = 191368,
+                }
+            },
+            ShockingDisclosure = {
+                key = "potionOfShockingDisclosure",
+                name = "Potion of Shocking Disclosure",
+                ranks = {
+                    [1] = 191399,
+                    [2] = 191400,
+                    [3] = 191401,
+                }
+            },
+            ResidualNeuralAgent = {
+                key = "residualNeuralChannelingAgent",
+                name = "Residual Neural Channeling Agent",
+                ranks = {
+                    [1] = 191372,
+                    [2] = 191373,
+                    [3] = 191374,
+                }
+            }
+        }
+        local orderList = {
+            [1] = "Lowest Rank First",
+            [2] = "Highest Rank First"
+        }
+        if section ~= nil then
+            local itemList = {}
+
+            for k, v in pairs(potions) do
+                for i = 1, #v.ranks do
+                    local itemId = v.ranks[i]
+                    local item = Item:CreateFromItemID(itemId)
+                    itemList[k] = v.name
+                    item:ContinueOnItemLoad(function()
+                        local name = item:GetItemName()
+                        itemList[k] = name
+                    end)
+                end
+            end
+            local potionDropdown, potionCheckbox = br.ui:createDropdown(section, moduleName, itemList, 1, "|cffFFFFFFSet Combat Potion to use.")
+            potionDropdown.defaults.width = 225
+            potionDropdown.settings.width = 225
+            potionDropdown:ApplySettings()
+            local rankDropdown = br.ui:createDropdownWithout(section, "Potion Order", orderList, 1, "|cffFFFFFFThe rank order potions are used.\nLowest Rank First = R1 to R3\nIf available, fleeting Potions will be used first.")
+            rankDropdown.defaults.width = 130
+            rankDropdown.settings.width = 130
+            rankDropdown:ApplySettings()
+        end
+        if section == nil then
+            -- We can check the combat potion CD with any potion we want (even if its not in the players bags) as long as it shares the same CD as the potions we want to use.
+            local potionOnCd = GetItemCooldown(191372)
+            if ui.checked("Potion") and potionOnCd == 0 then
+                local potionKey = ui.value(moduleName)
+                local order = ui.value("Potion Order")
+                local startRank = order == 1 and 1 or 3
+                local stopRank = order == 1 and 3 or 1
+                local increment = order == 1 and 1 or -1
+                local potionTable = potions[potionKey]
+
+                for i = startRank, stopRank, increment do
+                    local itemToUse = potionTable.key .. "R" .. i
+                    if potionTable.fleeting then
+                        local fleetingItemToUse = itemToUse .. "Fleeting"
+                        if use.able[itemToUse]() then
+                            itemToUse = fleetingItemToUse
+                        end
+                    end
+                    if use.able[itemToUse]() then
+                        if use[itemToUse]() then
+                            ui.debug("Potion Module: Using Potion " .. itemToUse)
+                            return true
+                        end
+                    end
                 end
             end
         end

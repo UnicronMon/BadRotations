@@ -129,6 +129,7 @@ local function createOptions()
         br.ui:checkSectionState(section)
         -- Cooldown Options
         section = br.ui:createSection(br.ui.window.profile, "Cooldowns")
+        br.player.module.Potion(section)
         -- Augment Rune
         br.ui:createCheckbox(section, "Augment Rune")
         -- Potion
@@ -999,64 +1000,58 @@ end
 
 ---@param from? string
 actionList.defensives = function(from)
-    local step = 1
     if ui.useDefensive() and not unit.mounted() and not (buff.prowl.exists() or buff.shadowmeld.exists()) and not buff.flightForm.exists() and not buff.prowl.exists() then
         if var.ui.useRebirth and unit.inCombat() then
             local rebirthTarget = var.ui.useRebirthTarget
             
             if cast.able.rebirth(rebirthTarget, "dead") and unit.deadOrGhost(rebirthTarget) and (unit.friend(rebirthTarget) or unit.player(rebirthTarget)) then
                 if cast.rebirth(thisUnit, "dead") then
-                    ui.debug("Casting Rebirth on " .. unit.name(rebirthTarget) .. " [defensives] - " .. step)
+                    ui.debug("Casting Rebirth on " .. unit.name(rebirthTarget) .. " [defensives] - 1")
                     return true
                 end
             end
         end
 
-        step = step + 1
         if var.ui.useRevive and not unit.inCombat() then
             local reviveTarget = var.ui.useReviveTarget
             if cast.able.rebirth(reviveTarget, "dead") and unit.deadOrGhost(reviveTarget) and (unit.friend(reviveTarget) or unit.player(reviveTarget)) then
                 if cast.rebirth(thisUnit, "dead") then
-                    ui.debug("Casting Revive on " .. unit.name(reviveTarget) .. " [defensives] - " .. step)
+                    ui.debug("Casting Revive on " .. unit.name(reviveTarget) .. " [defensives] - 2")
                     return true
                 end
             end
         end
 
-        step = step + 1
         if var.ui.useRemoveCorruption then
             local useRemoveCorruptionTarget = var.ui.useRemoveCorruptionTarget
             if cast.able.removeCorruption() and (unit.friend(useRemoveCorruptionTarget) or unit.player(useRemoveCorruptionTarget)) and cast.dispel.removeCorruption(useRemoveCorruptionTarget) then
                 if cast.removeCorruption(useRemoveCorruptionTarget) then
                     ui.debug("Casting Remove Corruption on " ..
-                    unit.name(useRemoveCorruptionTarget) .. " [defensives] - " .. step)
+                    unit.name(useRemoveCorruptionTarget) .. " [defensives] - 3")
                     return true
                 end
             end
         end
 
-        step = step + 1
         if var.ui.useSoothe and cast.able.soothe() then
             for i = 1, #var.enemies.yards40 do
                 local thisUnit = var.enemies.yards40[i]
                 if cast.dispel.soothe(thisUnit) then
                     if cast.soothe(thisUnit) then
-                        ui.debug("Casting Soothe on " .. unit.name(thisUnit) .. " [defensives] - " .. step)
+                        ui.debug("Casting Soothe on " .. unit.name(thisUnit) .. " [defensives] - 4")
                         return true
                     end
                 end
             end
         end
 
-        step = step + 1
         if var.ui.useRenewal and unit.inCombat() and cast.able.renewal() and unit.hp() <= var.ui.useRenewalValue then
             if cast.renewal() then
-                ui.debug("Casting Renewal - [defensives] - " .. step)
+                ui.debug("Casting Renewal - [defensives] - 5")
                 return true
             end
         end
 
-        step = step + 1
         -- PowerShift - Breaks Crowd Control (R.I.P Powershifting)
         if var.ui.breakCC and cast.able.catForm() then
             if not cast.noControl.catForm() and var.lastForm ~= 0 then
@@ -1068,13 +1063,13 @@ actionList.defensives = function(from)
             elseif cast.noControl.catForm() then
                 if unit.form() == 0 then
                     cast.catForm("player")
-                    ui.debug("Casting Cat Form [Breaking CC]")
+                    ui.debug("Casting Cat Form [Breaking CC] - [defensives] - 6")
                 else
                     for i = 1, unit.formCount() do
                         if i == unit.form() then
                             var.lastForm = i
                             cast.form(i)
-                            ui.debug("Casting Last Form [Breaking CC]")
+                            ui.debug("Casting Last Form [Breaking CC] - [defensives] - 6")
                             return true
                         end
                     end
@@ -1124,18 +1119,6 @@ actionList.defensives = function(from)
                         end
                     end
                 end
-                -- Hold Predatory Swiftness for Bloodtalons unless Health is Below Half of Threshold or Predatory Swiftness is about to Expire.
-                --[[ if var.ui.useRegrowthInC == 2 and talent.bloodtalons then
-                    -- Lowest Party/Raid or Player
-                    if (thisHP <= var.ui.useRegrowthValue / 2) or buff.predatorySwiftness.remain() < unit.gcd(true) * 2 then
-                        if unit.form() ~= 0 and not buff.predatorySwiftness.exists() then
-                            unit.cancelForm()
-                            ui.debug("Cancel Form [Regrowth - InC Break]")
-                        elseif unit.form() == 0 or buff.predatorySwiftness.exists() then
-                            if cast.regrowth(thisUnit) then ui.debug("Casting Regrowth [IC BT Hold] on "..unit.name(thisUnit)) return true end
-                        end
-                    end
-                end ]]
             end
         end
 
@@ -1414,7 +1397,7 @@ actionList.berserk = function(from)
         if actionList.bloodtalons('berserk - 3') then return true end
     end
     -- 4 prowl,if=!(buff.bt_rake.up&active_bt_triggers=2)&(action.rake.ready&gcd.remains=0&!buff.sudden_ambush.up&(dot.rake.refreshable|dot.rake.pmultiplier<1.4)&!buff.shadowmeld.up&cooldown.feral_frenzy.remains<44&!buff.apex_predators_craving.up)
-    --[[ if cast.able.prowl() and var.ui.prowlMode and not (bt.rake and bt.triggers == 2)
+    if cast.able.prowl() and var.ui.prowlMode and not (bt.rake and bt.triggers == 2)
         and (cast.able.rake() and not buff.suddenAmbush.exists() and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or 1.4 * debuff.rake.calc() >= debuff.rake.applied(var.maxRakeTicksGainUnit)))
         and not buff.shadowmeld.exists() and (talent.feralFrenzy and cd.feralFrenzy.remain() < 44) and not buff.apexPredatorsCraving.exists()
     then
@@ -1422,9 +1405,9 @@ actionList.berserk = function(from)
             ui.debug("Casting Prowl [berserk] - 4")
             return true
         end
-    end ]]
+    end
     -- 5 shadowmeld,if=!(buff.bt_rake.up&active_bt_triggers=2)&action.rake.ready&!buff.sudden_ambush.up&(dot.rake.refreshable|dot.rake.pmultiplier<1.4)&!buff.prowl.up&!buff.apex_predators_craving.up
-    --[[ if cast.able.shadowmeld() and not (bt.rake and bt.triggers == 2) and cast.able.rake() and not buff.suddenAmbush.exists()
+    if cast.able.shadowmeld() and not (bt.rake and bt.triggers == 2) and cast.able.rake() and not buff.suddenAmbush.exists()
         and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or 1.4 * debuff.rake.calc() >= debuff.rake.applied(var.maxRakeTicksGainUnit))
         and not buff.prowl.exists() and not buff.apexPredatorsCraving.exists()
     then
@@ -1432,7 +1415,7 @@ actionList.berserk = function(from)
             ui.debug("Casting Shadowmeld [berserk] - 5")
             return true
         end
-    end ]]
+    end
     -- 6 rake,if=!(buff.bt_rake.up&active_bt_triggers=2)&(refreshable|(buff.sudden_ambush.up&persistent_multiplier>dot.rake.pmultiplier))
     if cast.able.rake(var.maxRakeTicksGainUnit) and not (bt.rake and bt.triggers == 2) and (debuff.rake.refresh(var.maxRakeTicksGainUnit) or (buff.suddenAmbush.exists() and persistentMultiplier('rake') > debuff.rake.pmultiplier(var.maxRakeTicksGainUnit)))
     then
@@ -1741,6 +1724,11 @@ end
 
 ---@param from? string
 actionList.cooldown = function(from)
+    if ui.useCDs() then
+        if module.Potion() then
+            ui.debug("Using Potion [cooldown] - 0" .. (from and " from " .. from or ""))
+        end
+    end
     -- 3 incarnation,target_if=max:target.time_to_die,if=(target.time_to_die<fight_remains&target.time_to_die>25)|target.time_to_die=fight_remains
     if (talent.incarnationAvatarOfAshamane and cast.able.incarnationAvatarOfAshamane()) and unit.exists(var.units.dyn5) and unit.distance(var.units.dyn5) < 5 and var.ui.berserkIncarnation and ui.useCDs() then
         if cast.incarnationAvatarOfAshamane() then

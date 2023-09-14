@@ -128,8 +128,15 @@ end
 function br.getHealthPot()
 	local locale = br._G.GetLocale()
 	if locale ~= "enUS" and locale ~= "enGB" then
-		if br.hasItem(191380) then
-			return 191380
+		local refreshingHealingPotions = {
+			[1] = 191380,
+			[2] = 191379,
+			[3] = 191378,
+		}
+		for k, v in pairs(refreshingHealingPotions) do
+			if br.hasItem(v) then
+				return v
+			end
 		end
 	end
 	local potion = br.player.potion
