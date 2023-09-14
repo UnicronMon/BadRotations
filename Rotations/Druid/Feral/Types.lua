@@ -1,0 +1,365 @@
+---@alias DropToggle "LeftCtrl" | "LeftShift" | "RightCtrl" | "RightShift" | "RightAlt" | "None" | "MMouse" | "Mouse4" | "Mouse5"
+
+---@alias DotSpellNames "moonfireCat" | "primalWrath" | "rake" | "rip" | "thrashCat"
+
+---@alias btSpells "brutalSlash" | "moonfireCat" | "rake" | "shred" | "swipeCat" | "thrashCat"
+
+---@alias DruidBuffs
+---| "bearForm"
+---| "catForm"
+---| "flightForm"
+---| "stagForm"
+---| "travelForm"
+---| "treantForm"
+---| "moonkinForm"
+---| "adaptiveSwarm"
+---| "barkskin"
+---| "burningEssence"
+---| "dash"
+---| "ironfur"
+---| "innervate"
+---| "kindredEmpowerment"
+---| "kindredSpiritsBuff"
+---| "kindredEmpowermentEnergize"
+---| "loneSpirit"
+---| "lycarasTwig"
+---| "markOfTheWild"
+---| "naturesVigil"
+---| "prowl"
+---| "rejuvenation"
+---| "regrowth"
+---| "shadowmeld"
+---| "soulshape"
+---| "stampedingRoar"
+---| "stampedingRoarCat"
+---| "suddenAmbush"
+---| "wildGrowth"
+---| "onethsPerception"
+---| "adaptiveSwarmDamage"
+---| "adaptiveSwarmHeal"
+---| "apexPredatorsCraving"
+---| "berserk"
+---| "bloodtalons"
+---| "clearcasting"
+---| "elunesGuidance"
+---| "fieryRedMaimers"
+---| "franticMomentum"
+---| "heartOfTheWild"
+---| "incarnationAvatarOfAshamane"
+---| "incarnationProwl"
+---| "ironJaws"
+---| "jungleStalker"
+---| "kingOfTheJungle"
+---| "leaderOfThePack"
+---| "mattedFur"
+---| "overflowingPower"
+---| "predatorySwiftness"
+---| "predatorRevealed"
+---| "sabertooth"
+---| "savageRoar"
+---| "scentOfBlood"
+---| "stampedingRoar"
+---| "survivalInstincts"
+---| "tigersFury"
+---| "tigersTenacity"
+
+---@alias SharedBuffs
+---| "draconicAugmentRune"
+
+---@alias AllBuffs DruidBuffs | SharedBuffs
+
+---@alias DruidDebuffs
+---| "adaptiveSwarm"
+---| "cyclone"
+---| "entanglingRoots"
+---| "growl"
+---| "hibernate"
+---| "maim"
+---| "moonfire"
+---| "rake"
+---| "rip"
+---| "thrashBear"
+---| "thrashCat"
+---| "massEntanglement"
+---| "sunfire"
+---| "wildCharge"
+---| "highWinds"
+---| "direFixation"
+---| "frenziedAssault"
+---| "adaptiveSwarmDamage"
+---| "adaptiveSwarmHeal"
+---| "feralFrenzy"
+---| "moonfireCat"
+---| "rakeStun"
+---| "mightyBash"
+---| "tear"
+---| "ferociousWound"
+
+---@alias SharedDebuffs
+---| "fixate"
+
+---@alias AllDebuffs DruidDebuffs | SharedDebuffs
+
+---@alias DruidAbilities 
+---| "convokeTheSpiritsFeral"
+---| "adaptiveSwarmDamage"
+---| "adaptiveSwarmHeal"
+---| "adaptiveSwarm"
+---| "moonfireCat"
+---| "incarnProwl"
+---| "incarnationAvatarOfAshamane"
+---| "berserk"
+---| "feralFrenzy"
+---| "primalWrath"
+---| "tigersFury"
+---| "barkskin"
+---| "bearForm"
+---| "brutalSlash"
+---| "catForm"
+---| "charmWoodlandCreature"
+---| "cyclone"
+---| "dash"
+---| "dreamwalk"
+---| "entanglingRoots"
+---| "ferociousBite"
+---| "flap"
+---| "flightForm"
+---| "growl"
+---| "mangle"
+---| "markOfTheWild"
+---| "moonfire"
+---| "mountForm"
+---| "prowl"
+---| "rebirth"
+---| "regrowth"
+---| "renewal"
+---| "revive"
+---| "rip"
+---| "removeCorruption"
+---| "skullBash"
+---| "shred"
+---| "sunfire"
+---| "swipe"
+---| "swipeBear"
+---| "swipeCat"
+---| "survivalInstincts"
+---| "teleportMoonglade"
+---| "thorns"
+---| "thrashBear"
+---| "thrashCat"
+---| "trackBeasts"
+---| "trackHumanoids"
+---| "travelForm"
+---| "wrath"
+---| "soothe"
+---| "rake"
+
+---@alias SharedAbilities
+---| "shadowmeld"
+
+---@alias AllAbilities DruidAbilities | SharedAbilities
+
+---@alias DruidDispel
+---| "removeCorruption"
+---| "soothe"
+
+---@alias DruidTalents
+---| "tigersFury"
+---| "omenOfClarity"
+---| "direFixation"
+---| "primalWrath"
+---| "mercilessClaws"
+---| "thrashingClaws"
+---| "predator"
+---| "tearOpenWounds"
+---| "doubleClawedRake"
+---| "protectiveGrowth"
+---| "sabertooth"
+---| "tirelessEnergy"
+---| "pouncingStrikes"
+---| "suddenAmbush"
+---| "rampantFerocity"
+---| "survivalInstincts"
+---| "infectedWounds"
+---| "tasteForBlood"
+---| "lunarInspiration"
+---| "predatorySwiftness"
+---| "berserk"
+---| "dreadfulBleeding"
+---| "relentlessPredator"
+---| "ragingFury"
+---| "tigersTenacity"
+---| "berserkHeartOfTheLion"
+---| "momentOfClarity"
+---| "berserkFrenzy"
+---| "wildSlashes"
+---| "brutalSlash"
+---| "carnivorousInstinct"
+---| "franticMomentum"
+---| "catsCuriosity"
+---| "lionsStrength"
+---| "bloodtalons"
+---| "adaptiveSwarm"
+---| "incarnationAvatarOfAshamane"
+---| "convokeTheSpiritsFeral"
+---| "soulOfTheForest"
+---| "veinripper"
+---| "ripAndTear"
+---| "feralFrenzy"
+---| "unbridledSwarm"
+---| "ashamanesGuidance"
+---| "circleOfLifeAndDeath"
+---| "apexPredatorsCraving"
+---| "rake"
+---| "frenziedRegeneration"
+---| "rejuvenation"
+---| "starfire"
+---| "thrash"
+---| "improvedBarkskin"
+---| "swiftmend"
+---| "sunfire"
+---| "starsurge"
+---| "rip"
+---| "improvedSwipe"
+---| "verdantHeart"
+---| "wildGrowth"
+---| "removeCorruption"
+---| "moonkinForm"
+---| "improvedSunfire"
+---| "nurturingInstinct"
+---| "hibernate"
+---| "felineSwiftness"
+---| "thickHide"
+---| "wildCharge"
+---| "tigerDash"
+---| "naturalRecovery"
+---| "cyclone"
+---| "astralInfluence"
+---| "tirelessPursuit"
+---| "skullBash"
+---| "soothe"
+---| "risingLightFallingNight"
+---| "typhoon"
+---| "primalFury"
+---| "mattedFur"
+---| "stampedingRoar"
+---| "improvedRejuvenation"
+---| "galeWinds"
+---| "incessantTempest"
+---| "incapacitatingRoar"
+---| "mightyBash"
+---| "ursineVigor"
+---| "lycarasTeachings"
+---| "forestwalk"
+---| "massEntanglement"
+---| "ursolsVortex"
+---| "wellHonedInstincts"
+---| "improvedStampedingRoar"
+---| "renewal"
+---| "innervate"
+---| "protectorOfThePack"
+---| "heartOfTheWild"
+---| "naturesVigil"
+
+---@class Cast
+---@field able { [AllAbilities | 'racial']: fun(thisUnit?:UnitId, castType?: CastType, minUnits?: number, effectRng?: number, predict?:boolean, predictPad?:boolean, enemies?:table): boolean }
+---@field active { [AllAbilities]: fun(): boolean }
+---@field auto { [AllAbilities]: fun(): boolean }
+---@field cancel { [AllAbilities]: fun(): boolean }
+---@field current { [AllAbilities]: fun(): boolean }
+---@field dispel { [DruidDispel]: fun(thisUnit: UnitId): boolean }
+---@field empowered { [AllAbilities]: fun(): boolean }
+---@field inFlight { [AllAbilities]: fun(thisUnit?: UnitId): boolean }
+---@field inFlightRemain { [AllAbilities]: fun(): number }
+---@field last { [AllAbilities]: fun(): boolean, time: table<AllAbilities, fun(): number>}
+---@field noControl { [AllAbilities]: fun(): boolean }
+---@field pool { [AllAbilities]: fun(altPower?: boolean, specificAmt?: number, multiplier?: number ): boolean }
+---@field cost { [AllAbilities]: fun(): number }
+---@field range { [AllAbilities]: fun(): number }
+---@field regen { [AllAbilities]: fun(): number }
+---@field time { [AllAbilities]: fun(): number }
+---@field safe { [AllAbilities]: fun(): boolean }
+---@field timeSinceLast { [AllAbilities]: fun(): number }
+---@field form fun(index): boolean
+---@field racial fun(): boolean
+---@field [AllAbilities] fun(thisUnit?:UnitId, castType?: CastType, minUnits?: number, effectRng?: number, predict?:boolean, predictPad?:boolean, enemies?:table): boolean | nil
+
+---@class Buff
+---@field cancel fun(unit?: UnitId, source?: UnitId)
+---@field count fun(): number
+---@field duration fun(unit?: UnitId, source?: UnitId): number
+---@field exists fun(unit?: UnitId, source?: UnitId): boolean 
+---@field react fun(unit?: UnitId, source?: UnitId): boolean
+---@field remain fun(unit?: UnitId, source?: UnitId): number
+---@field remains fun(unit?: UnitId, source?: UnitId): number
+---@field refresh fun(unit?: UnitId, source?: UnitId): boolean
+---@field stack fun(unit?: UnitId, source?: UnitId): number
+
+---@class DruidBuff
+---@field [AllBuffs] Buff
+
+---@class Debuff
+---@field exists fun(unit?: UnitId, source?: UnitId): boolean
+---@field duration fun(unit?: UnitId, source?: UnitId): number
+---@field remain fun(unit?: UnitId, source?: UnitId): number
+---@field remains fun(unit?: UnitId, source?: UnitId): number
+---@field stack fun(unit?: UnitId, source?: UnitId): number
+---@field pandemic fun(unit?: UnitId, source?: UnitId): number
+---@field pmultiplier fun(unit?: UnitId, source?: UnitId): number
+---@field refresh fun(unit?: UnitId, source?: UnitId): boolean
+---@field count fun(): number
+---@field remainCount fun(remain: number): number
+---@field refreshCount fun(range?: number): number
+---@field lowest fun(range?: number, debuffType?: string, source?: UnitId): string
+---@field lowestPet fun(range?: number, debuffType?: string): string
+---@field max fun(range?: number, debuffType?: string): string
+---@field exsang fun(thisUnit?: UnitId): boolean
+---@field calc fun(thisUnit?: UnitId): number
+---@field applied fun(thisUnit?: UnitId): number
+
+---@class DruidDebuff
+---@field [AllDebuffs] Debuff
+
+---@class Charges
+---@field exists fun(): boolean
+---@field count fun(): number, number, number, number, number
+---@field frac fun(): number
+---@field max fun(): number
+---@field recharge fun(chargeMax?: boolean): number
+---@field timeTillFull fun(): number
+
+---@class DruidCharges
+---@field [AllAbilities] Charges
+
+
+---@class DruidTalent
+---@field rank { [DruidTalents]: number }
+---@field [DruidTalents] boolean
+
+---@class CD
+---@field duration fun(): number
+---@field exists fun(): boolean
+---@field prevgcd fun(): number
+---@field ready fun(): boolean
+---@field remain fun(): number
+---@field remains fun(): number
+
+---@class DruidCD
+---@field [AllAbilities] CD
+
+---@class SupportFiles
+---@field UMFeralACLPrecombat UMFeralACLPrecombat
+---@field UMFeralACLUtility UMFeralACLUtility
+---@field UMFeralACLDefensives UMFeralACLDefensives
+---@field UMFeralACLDefault UMFeralACLDefault
+---@field UMFeralACLAoEBuilder UMFeralACLAoEBuilder
+---@field UMFeralACLBerserk UMFeralACLBerserk
+---@field UMFeralACLBloodtalons UMFeralACLBloodtalons
+---@field UMFeralACLBuilder UMFeralACLBuilder
+---@field UMFeralACLClearcasting UMFeralACLClearcasting
+---@field UMFeralACLCooldown UMFeralACLCooldown
+---@field UMFeralACLFinisher UMFeralACLFinisher
+---@field UMFeralACLInterrupts UMFeralACLInterrupts
+---@field UMFeralVariables UMFeralVariables
+---@field UMFeralUtility UMFeralUtility
+---@field UMUI UMUI
